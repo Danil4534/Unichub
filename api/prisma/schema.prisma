@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String      @id @default(uuid())
+  name          String?
+  surname       String?
+  email         String?     @unique
+  phone         String?     @unique
+  password      String?
+  img           String?
+  sex           UserSex?
+  info          String?
+  otpCode       Int?        @unique
+  otpExpiresAt  DateTime?
+  banned        Boolean?    @default(false)
+  activeStatus  UserStatus? @default(Offline)
+  roles         Role[]      @default([Student])
+  created       DateTime?   @default(now())
+  Group         Group?      @relation("UserGroup", fields: [groupId], references: [id], onUpdate: Cascade)
+  groupId       String?
+  sentChats     Chat[]      @relation("User1Chats")
+  receivedChats Chat[]      @relation("User2Chats")
+  Comment       Comment[]
+  GradeBook     GradeBook[]
+  TaskGrade     TaskGrade[]
+  Message       Message[]
+}
+
+model Chat {
+  id        String    @id @default(uuid())
+  user1     User      @relation("User1Chats", fields: [user1Id], references: [id])
+  user1Id   String
+  user2     User      @relation("User2Chats", fields: [user2Id], references: [id])
+  user2Id   String
+  messages  Message[]
+  createdAt DateTime  @default(now())
+}
+
+model Message {
+  id      String   @id @default(uuid())
+  content String
+  created DateTime @default(now())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id])
+  chat    Chat     @relation(fields: [chatId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  chatId  String
+}
+
+model Group {
+  id        String      @id @default(uuid())
+  name      String?
+  students  User[]      @relation("UserGroup")
+  subjects  Subject[]   @relation("GroupSubject")
+  status    String
+  Events    Event[]
+  TaskGroup TaskGroup[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  start       DateTime
+  end         DateTime
+  status      String
+  created     DateTime
+  Group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  groupId     String?
+}
+
+model Subject {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  status      String      @default("New")
+  lessons     Lesson[]
+  tasks       Task[]
+  groups      Group[]     @relation("GroupSubject")
+  userId      String?
+  GradeBook   GradeBook[]
+}
+
+model Lesson {
+  id             String    @id @default(uuid())
+  title          String
+  description    String
+  startTime      DateTime?
+  endTime        DateTime?
+  linkForMeeting String?
+  tasks          Task[]
+  created        DateTime
+  subject        Subject?  @relation(fields: [subjectId], references: [id])
+  subjectId      String?
+}
+
+model Task {
+  id          String      @id @default(uuid())
+  title       String?
+  description String?
+  type        TypeTask
+  startTime   DateTime?
+  endTime     DateTime?
+  grade       Int?
+  comments    Comment[]
+  Lesson      Lesson?     @relation(fields: [lessonId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  lessonId    String?
+  Subject     Subject?    @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId   String?
+  TaskGrade   TaskGrade[]
+  taskGroups  TaskGroup[]
+}
+
+model TaskGroup {
+  id      String @id @default(uuid())
+  task    Task   @relation(fields: [taskId], references: [id])
+  taskId  String
+  group   Group  @relation(fields: [groupId], references: [id])
+  groupId String
+}
+
+model Comment {
+  id      String  @id @default(uuid())
+  content String
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Task    Task?   @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  taskId  String?
+  userId  String
+}
+
+model TaskGrade {
+  id      String   @id @default(uuid())
+  grade   Int
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  task    Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId  String
+  created DateTime @default(now())
+
+  @@unique([userId, taskId])
+}
+
+model GradeBook {
+  id        String  @id @default(uuid())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId String
+  grade     Int
+}
+
+enum TypeTask {
+  Test
+  Default
+}
+
+enum UserStatus {
+  Online
+  Offline
+}
+
+enum Role {
+  Admin
+  Student
+  Teacher
+  Parent
+}
+
+enum UserSex {
+  MALE
+  FEMALE
+}
+
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  Saturday
+  Sunday
+}
