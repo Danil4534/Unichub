@@ -52,7 +52,7 @@ function BigCalendar({ className }: { className: string }) {
 
   const eventStyleGetter = (event: EventTypes) => {
     const now = new Date();
-    const isPast = event.end < now;
+    const isPast = event.end < now && event.start < now;
 
     const style = {
       backgroundColor: isPast ? "#fca5a5" : "#bbf7d0", // red-300 vs green-200

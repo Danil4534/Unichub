@@ -31,6 +31,7 @@ import RatingsTable from "./components/Table";
 import { cn } from "../../../lib/utils";
 import { Link } from "react-router-dom";
 import { DatePickerWithRange } from "../../ui/DatePicker";
+import { CreateEventModal } from "../CreateEventModal";
 
 type GroupModalProps = {
   group: any;
@@ -220,7 +221,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                   <Link
                     to={`/homepage/subjects/${item.id}`}
                     key={index}
-                    className="flex w-auto justify-between border border-t-2  animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-md py-2 px-2  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards dark:bg-neutral-800"
+                    className="h-10 flex w-auto justify-between items-center border border-t-2  animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-md py-2 px-2  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards dark:bg-neutral-800"
                   >
                     <div className="flex gap-4 font-k2d">
                       {store.theme === "dark" ? (
@@ -235,6 +236,9 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                         />
                       )}
                       {item.name}
+                      <p className="text-xs px-1  bg-emerald-300 lowercase text-center rounded-full items-center flex">
+                        {item.status}
+                      </p>
                     </div>
                     {store.currentUser.roles.includes("Admin") && (
                       <div className="flex gap-1">
@@ -283,7 +287,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                   students.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="flex w-full min-h-[] justify-between border border-t-2 dark:bg-neutral-800 animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-lg p-4  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards"
+                      className="flex w-full  justify-between border border-t-2 dark:bg-neutral-800 animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-lg p-4  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards"
                     >
                       <div className="flex justify-around w-full gap-4 font-k2d">
                         {item.img ? (
@@ -379,7 +383,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
             )}
           </TabsContent>
           <TabsContent value="Events">
-            <div className="outline-none flex flex-col justify-between p-0 my-2 ">
+            <div className="outline-none flex flex-col justify-between p-0 my-2 h-full">
               {store.currentUser.roles.includes("Admin") ||
               store.currentUser.roles.includes("Teacher") ? (
                 <AlertDialog>
@@ -387,17 +391,17 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                     Create Event
                   </AlertDialogTrigger>
                   <AlertDialogContent>
-                    {/* <InviteStudentModal group={group} /> */}
+                    <CreateEventModal />
                   </AlertDialogContent>
                 </AlertDialog>
               ) : (
                 <></>
               )}
-              <div className="w-auto ">
+              <div className="mt-4 overflow-y-scroll h-96 w-full">
                 <Accordion
                   type="single"
                   collapsible
-                  className="h-full py-2 pr-4 mt-3 flex flex-col gap-2 overflow-y-auto"
+                  className="pr-4  flex flex-col gap-2 overflow-y-auto"
                 >
                   {events?.length > 0 ? (
                     events

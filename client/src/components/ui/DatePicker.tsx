@@ -10,7 +10,7 @@ import { Calendar } from "./calendar";
 
 type DatePickerProps = {
   from?: string | Date;
-  to?: string | Date;
+  to?: string | Date | undefined;
   className?: string;
 };
 

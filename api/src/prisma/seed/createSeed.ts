@@ -35,7 +35,7 @@ async function seedEvents(groups: any[]) {
     'Project Deadline',
   ];
 
-  const daysToGenerate = 7; // one event per day
+  const daysToGenerate = 30;
 
   const events = groups.flatMap((group) => {
     return Array.from({ length: daysToGenerate }).map((_, i) => {
@@ -251,7 +251,7 @@ async function main() {
     await clearDatabase();
 
     const groups = await seedGroups();
-    const users = await seedUsers(20);
+    const users = await seedUsers(40);
     await assignUsersToGroups(users, groups);
     await seedEvents(groups);
     const subjects = await seedSubjects(groups);

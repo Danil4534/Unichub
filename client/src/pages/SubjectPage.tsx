@@ -82,9 +82,11 @@ const SubjectPage: React.FC = () => {
         <div>
           <Tabs defaultValue="Tasks">
             <TabsList>
-              <TabsTrigger value="Tasks">
-                Tasks {subject?.tasks.length}
+              <TabsTrigger value="Tasks" className="flex gap-2">
+                Tasks {subject?.tasks.length}{" "}
+                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
               </TabsTrigger>
+              <TabsTrigger value="Test">Tests {testTasks?.length}</TabsTrigger>
               <TabsTrigger value="Lessons">
                 Lessons {subject?.lessons.length}
               </TabsTrigger>

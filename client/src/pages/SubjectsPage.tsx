@@ -125,7 +125,7 @@ const SubjectsPage: React.FC = () => {
                   style={{ animationDelay: `${index * 200}ms` }}
                   className="h-40 opacity-0 animate-fadeInOpacity hover:animate-background cursor-pointer rounded-2xl border-t-2 shadow-md border-emerald-400 hover:bg-[length:400%_400%] hover:shadow-xl animate-fill-forwards"
                 >
-                  <div className="w-auto h-full rounded-2xl bg-white p-4 relative dark:bg-neutral-800">
+                  <div className="w-auto h-full rounded-2xl bg-white p-2.5 relative dark:bg-neutral-800">
                     <div className="absolute left-3 bottom-3">
                       {store.theme === "dark" ? (
                         <Image
@@ -136,16 +136,21 @@ const SubjectsPage: React.FC = () => {
                         <Image src={LogoIconBlack} className="animate-rotate" />
                       )}
                     </div>
-                    <div className="flex gap-2 flex-col">
+                    <div className="flex gap-1 flex-col w-full">
                       <div className="flex items-start justify-between">
-                        <h3 className=" text-lg font-k2d font-medium text-neutral-400 flex gap-2">
-                          Subject
-                        </h3>
+                        <div className="">
+                          <h3 className=" text-lg font-k2d font-medium text-neutral-400 flex gap-2">
+                            Subject
+                          </h3>
+                          <p className="text-xs p-0.5 bg-emerald-300 lowercase text-center rounded-full">
+                            {item.status}
+                          </p>
+                        </div>
                         <h3 className=" text-lg font-k2d font-medium text-gray-500 flex gap-2">
                           {item.name}
                         </h3>
                       </div>
-                      <div className="flex justify-end gap-4 ">
+                      <div className="flex w-full items-center justify-end gap-2 ">
                         <div className="flex flex-col gap-2">
                           <div className="w-20 flex-col-reverse h-20 border border-neutral-200 flex justify-center items-center font-k2d font-medium rounded-xl">
                             <h3 className="font-sm">Tasks</h3>

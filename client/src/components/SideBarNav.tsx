@@ -92,7 +92,7 @@ export const SideBarNav: React.FC = () => {
           <Header />
           <div className="w-full h-auto flex flex-row gap-2 animate-fadeIn">
             {pathname == "/homepage" ? (
-              <div className="w-full h-auto border border-neutral-200 dark:border-neutral-600 rounded-2xl justify-center items-center p-4 animate-fadeInOpacity">
+              <div className="w-full h-[calc(100vh-120px)] border border-neutral-200 dark:border-neutral-600 rounded-2xl justify-center items-center p-4 animate-fadeInOpacity">
                 <div className="flex justify-between">
                   <h1 className="font-k2d text-2xl mb-2">Schedule</h1>
                   <div className="flex justify-end items-center gap-2">
