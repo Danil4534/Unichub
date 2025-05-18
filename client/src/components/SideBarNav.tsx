@@ -12,30 +12,31 @@ import axios from "axios";
 import { useStore } from "../store/store";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
-import { Image } from "../components/ui/Image";
+import { Image } from "./ui/Image";
 
-type RadialChartData = {
+type RadialChartProps = {
   label: string;
   count: number;
 };
+
 export const SideBarNav: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  // const [groups, setGroups] = useState([]);
-  // const [teachers, setTeachers] = useState([]);
-  // const [users, setUsers] = useState();
-  const [data, setData] = useState<RadialChartData[]>([]);
+  const [, setGroups] = useState<RadialChartProps[]>([]);
+  const [, setTeachers] = useState<RadialChartProps[]>([]);
+  const [, setUsers] = useState<RadialChartProps[]>();
+  const [data, setData] = useState<RadialChartProps[]>([]);
 
-  // const handleGroups = async () => {
-  //   const response = await axios.get(`http://localhost:3000/group`);
-  //   setGroups(response.data);
-  //   return { label: "Group", count: response.data.length };
-  // };
-  // const handleUsers = async () => {
-  //   const response = await axios.get(`http://localhost:3000/user`);
-  //   setUsers(response.data);
-  //   return { label: "Users", count: response.data.length };
-  // };
+  const handleGroups = async () => {
+    const response = await axios.get(`http://localhost:3000/group`);
+    setGroups(response.data);
+    return { label: "Group", count: response.data.length };
+  };
+  const handleUsers = async () => {
+    const response = await axios.get(`http://localhost:3000/user`);
+    setUsers(response.data);
+    return { label: "Users", count: response.data.length };
+  };
   const handleTeachers = async () => {
     const where = encodeURIComponent(
       JSON.stringify({ roles: { has: "Teacher" } })
@@ -43,7 +44,7 @@ export const SideBarNav: React.FC = () => {
     const response = await axios.get(
       `http://localhost:3000/user?where=${where}`
     );
-    // setTeachers(response.data);
+    setTeachers(response.data);
     return { label: "Teachers", count: response.data.length };
   };
   const handleStudents = async () => {
@@ -61,8 +62,8 @@ export const SideBarNav: React.FC = () => {
     const fetchData = async () => {
       try {
         const results = await Promise.all([
-          // handleGroups(),
-          // handleUsers(),
+          handleGroups(),
+          handleUsers(),
           handleTeachers(),
           handleStudents(),
         ]);

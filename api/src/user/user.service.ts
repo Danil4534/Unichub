@@ -24,6 +24,9 @@ export class UserService {
       take,
       where,
       orderBy,
+      include: {
+        Group: true,
+      },
     });
   }
   async toggleBanUser(id: string, ban: boolean) {

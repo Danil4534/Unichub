@@ -41,7 +41,7 @@ export class AuthService {
       throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
     }
 
-    if (email !== 'admin@gmail.com') {
+    if (email !== 'admin@gmail.com' && !foundUser.banned) {
       await this.emailService.sendToEmail({
         toEmail: email,
         username: foundUser.name,

@@ -33,7 +33,7 @@ import { RiFileExcel2Line } from "react-icons/ri";
 import { toast } from "sonner";
 import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import Button from "../../../ui/button";
+import { Button } from "../../../ui/button";
 
 type RatingsData = {
   headers: string[];

@@ -12,7 +12,7 @@ import { useStore } from "../store/store";
 import { FormikInput } from "./ui/FormikInput";
 import axios from "axios";
 import { useState } from "react";
-import { UserSex } from "../enum/userSex";
+import { UserSex } from "../enum/UserSexEnum";
 import { toast, Toaster } from "sonner";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 

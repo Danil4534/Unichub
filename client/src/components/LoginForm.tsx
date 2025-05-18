@@ -46,8 +46,11 @@ const LoginForm: React.FC = () => {
         toast("📩 Check your email");
         axios.defaults.headers.common["Authorization"] =
           "Bearer " + accessToken;
-        store.setCurrentUser();
-        store.setActiveOtpForm();
+        if (store.setCurrentUser().banned) {
+          toast("❌ Your account was banned");
+        } else {
+          store.setActiveOtpForm();
+        }
       }
     } catch (e: any) {
       if (e.status == 400) {

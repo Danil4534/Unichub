@@ -29,6 +29,8 @@ import {
 
 import RatingsTable from "./components/Table";
 import { cn } from "../../../lib/utils";
+import { Link } from "react-router-dom";
+import { DatePickerWithRange } from "../../ui/DatePicker";
 
 type GroupModalProps = {
   group: any;
@@ -215,7 +217,8 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
             <div className="w-full overflow-y-auto h-1/3 flex flex-col gap-2 ">
               {subjects?.length > 0 &&
                 subjects.map((item: any, index: number) => (
-                  <div
+                  <Link
+                    to={`/homepage/subjects/${item.id}`}
                     key={index}
                     className="flex w-auto justify-between border border-t-2  animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-md py-2 px-2  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards dark:bg-neutral-800"
                   >
@@ -244,7 +247,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </Link>
                 ))}
             </div>
           </TabsContent>
@@ -430,7 +433,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                             )}
                           </AccordionTrigger>
                           <AccordionContent>
-                            <div className="flex justify-between">
+                            <div className="flex items-center justify-between">
                               <div>
                                 <span className="text-xs underline lowercase">
                                   Start
@@ -442,6 +445,10 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                                 </span>{" "}
                                 {formatDate(item.end)}
                               </div>
+                              <DatePickerWithRange
+                                from={item.start}
+                                to={item.end}
+                              />
                               {store.currentUser.roles.includes("Admin") && (
                                 <div>
                                   <button className="w-12 flex justify-center items-center  h-7 text-sm text-center p-1.5 font-k2d bg-white dark:bg-transparent rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer hover:border-red-400 transition-colors duration-75">

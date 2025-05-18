@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useStore } from "../store/store";
 import { NavLink, useLocation } from "react-router-dom";
-import { Image } from "../components/ui/Image";
+import { Image } from "./ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import {
@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { cn } from "../lib/utils";
+import { DatePickerWithRange } from "./ui/DatePicker";
 export type EventTypes = {
   id: string;
   title: string;
@@ -99,6 +100,7 @@ const Events: React.FC = () => {
                     {formatDate(item.start)} -{" "}
                     <span className="text-xs underline lowercase"> End</span>{" "}
                     {formatDate(item.end)}
+                    <DatePickerWithRange from={item.start} to={item.end} />
                   </AccordionContent>
                 </AccordionItem>
               ))

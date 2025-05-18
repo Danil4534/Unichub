@@ -77,7 +77,7 @@ const TeachersPage: React.FC = () => {
         {filteredResults.length == 0 ? (
           <div className="w-full h-full flex justify-center items-center flex-col gap-3">
             {store.theme === "dark" ? (
-              <Image src={LogoIconLight} className="animate-rotate size-10" />
+              <Image src={LogoIconLight} className="animate-rotate size-8" />
             ) : (
               <Image src={LogoIconBlack} className="animate-rotate" />
             )}
@@ -126,7 +126,7 @@ const TeachersPage: React.FC = () => {
                             ) : (
                               <Image
                                 src={LogoIconBlack}
-                                className="animate-rotate"
+                                className="animate-rotate size-8"
                               />
                             )}
                           </div>

@@ -12,36 +12,9 @@ import { Input } from "../components/ui/Input";
 import { ScrollArea } from "../components/ui/scroll-area";
 import ChatItem from "../components/ChatItem";
 import MessageList from "../components/MessageList";
-
-export type Message = {
-  userId: string;
-  content: string;
-  chatId: string;
-  created: string;
-};
-
-export type Chat = {
-  id: string;
-  user1: {
-    id: string;
-    name: string;
-    img: string;
-    surname: string;
-    info: string;
-  };
-  user2: {
-    id: string;
-    name: string;
-    img: string;
-    surname: string;
-    info: string;
-  };
-};
-
-export type OpenChat = {
-  open: boolean;
-  chatId: string;
-};
+import { Chat } from "../shared/types/Chat";
+import { Message } from "../shared/types/Message";
+import { OpenChat } from "../shared/types/OpenChat";
 
 const ChatsPage: React.FC = () => {
   const open = true;
@@ -160,7 +133,7 @@ const ChatsPage: React.FC = () => {
                 </h1>
                 <ScrollArea className="h-1/3 w-full overflow-y-auto px-2">
                   <div className="flex flex-col gap-2 dark:bg-transparent bg-neutral-100 rounded-lg">
-                    {pinnedChats.map((chat, index) => (
+                    {pinnedChats.map((chat: Chat, index: number) => (
                       <ChatItem
                         key={chat.id}
                         chat={chat}

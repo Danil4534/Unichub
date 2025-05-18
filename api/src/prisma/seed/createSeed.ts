@@ -120,8 +120,11 @@ async function seedSubjects(groups: any[]) {
       return prisma.subject.create({
         data: {
           name,
-          description: `Description for ${name}`,
-          groups: { connect: { id: group.id } },
+          description: `Auto-generated subject for ${name}`,
+          status: 'Active',
+          groups: {
+            connect: [{ id: group.id }],
+          },
         },
       });
     }),
@@ -152,6 +155,49 @@ async function seedTasks(subjects: any[]) {
       }),
     ]),
   );
+}
+async function seedLessons(subjects: any[]) {
+  console.log('📚 Seeding lessons...');
+
+  const lessonTitles = [
+    'Introduction',
+    'Chapter 1',
+    'Chapter 2',
+    'Review Session',
+    'Practical Lab',
+    'Discussion Hour',
+  ];
+
+  const lessons = subjects.flatMap((subject) =>
+    Array.from({ length: getRandomInt(3, 6) }).map((_, i) => {
+      const baseDate = new Date();
+      baseDate.setDate(baseDate.getDate() + i);
+
+      const startTime = new Date(
+        baseDate.getFullYear(),
+        baseDate.getMonth(),
+        baseDate.getDate(),
+        getRandomInt(8, 15),
+        getRandomInt(0, 59),
+      );
+
+      const endTime = new Date(startTime.getTime() + 45 * 60000);
+
+      return prisma.lesson.create({
+        data: {
+          title: lessonTitles[i % lessonTitles.length],
+          description: `Auto-generated lesson for ${subject.name}`,
+          startTime,
+          endTime,
+          linkForMeeting: `https://meet.example.com/${subject.id.slice(0, 8)}-${i}`,
+          created: new Date(),
+          subjectId: subject.id,
+        },
+      });
+    }),
+  );
+
+  return Promise.all(lessons);
 }
 
 async function seedTaskGrades(users: any[], tasks: any[]) {
@@ -213,6 +259,7 @@ async function main() {
 
     await seedTaskGrades(users, tasks);
     await seedGradeBooks(users, subjects);
+    await seedLessons(subjects);
 
     console.log('✅ Database successfully seeded!');
   } catch (err) {

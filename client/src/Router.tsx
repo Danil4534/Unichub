@@ -11,6 +11,7 @@ import UserProfile from "./pages/UserProfile";
 import ChatsPage from "./pages/ChatsPage";
 import EventsPage from "./pages/EventsPage";
 import SubjectPage from "./pages/SubjectPage";
+import MessageList from "./components/MessageList";
 
 function Router() {
   return (
@@ -26,7 +27,9 @@ function Router() {
         <Route path="students" element={<StudentsPage />} />
         <Route path="groups" element={<GroupsPage />} />
         <Route path="profile" element={<UserProfile />} />
-        <Route path="chats" element={<ChatsPage />} />
+        <Route path="chats" element={<ChatsPage />}>
+          <Route path=":id" element={<MessageList />} />
+        </Route>
       </Route>
     </Routes>
   );

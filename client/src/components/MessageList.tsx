@@ -1,23 +1,25 @@
 import React, { useEffect, useRef } from "react";
-import { Image } from "../components/ui/Image";
+import { Image } from "./ui/Image";
 import { useStore } from "../store/store";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
-import { Chat, OpenChat } from "../pages/ChatsPage";
+
 import { TextArea } from "./ui/TextArea";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import { TbSend } from "react-icons/tb";
 import { LuSmilePlus } from "react-icons/lu";
 import { ScrollArea } from "./ui/scroll-area";
+import { OpenChat } from "../shared/types/OpenChat";
+import { Chat } from "../shared/types/Chat";
 
 type MessageListProps = {
-  openChat: OpenChat | undefined;
-  emojiOpen: any;
-  setEmojiOpen: any;
-  currentChat: any;
-  messages: any;
-  messageInput: any;
-  setMessageInput: any;
-  handleSendMessage: any;
+  openChat?: OpenChat | undefined;
+  emojiOpen?: any;
+  setEmojiOpen?: any;
+  currentChat?: any;
+  messages?: any;
+  messageInput?: any;
+  setMessageInput?: any;
+  handleSendMessage?: any;
 };
 const MessageList: React.FC<MessageListProps> = ({
   openChat,

@@ -7,7 +7,6 @@ import { Input } from "../components/ui/Input";
 import { Image } from "../components/ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
-
 import { useStore } from "../store/store";
 import { Link } from "react-router-dom";
 import {
@@ -16,29 +15,50 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
-
 import { ChevronDown } from "lucide-react";
 import { FaUser, FaUsers } from "react-icons/fa";
-import Button from "../components/ui/button";
 
+import { Subject } from "../shared/types/Subject";
+import { Button } from "../components/ui/button";
 const SubjectsPage: React.FC = () => {
-  const [subjects, setSubjects] = useState([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [displaySubjects, setDisplaySubject] = useState<Subject[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("All subjects");
+  const [selectedSubject, setSelectedSubject] =
+    useState<string>("All Subjects");
   const store = useStore();
+
   const fetchGroups = debounce(async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/subject`);
-      console.log(response);
-      setSubjects(response.data);
+      const responseSubjects = await axios.get(`http://localhost:3000/subject`);
+      setSubjects(responseSubjects.data);
+      setDisplaySubject(responseSubjects.data);
     } catch (e) {
       console.log(e);
     }
   });
-  const filteredResults = subjects.filter((item: any) =>
+
+  const filterSubjects = (filter: string) => {
+    if (filter === "My Subjects") {
+      const mySubjects = subjects.filter((subject: Subject) =>
+        subject.groups.some(
+          (group: any) => group.id == store.currentUser.groupId
+        )
+      );
+      setDisplaySubject(mySubjects);
+    } else {
+      setDisplaySubject(subjects);
+    }
+  };
+
+  const filteredResults = displaySubjects.filter((item: any) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredResults);
+
+  useEffect(() => {
+    filterSubjects(selectedSubject);
+  }, [selectedSubject, subjects]);
+
   useEffect(() => {
     fetchGroups();
     setSelectedSubject("All subjects");

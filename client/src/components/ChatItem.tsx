@@ -6,6 +6,7 @@ import { useStore } from "../store/store";
 import { RiUnpinLine } from "react-icons/ri";
 import { TiPinOutline } from "react-icons/ti";
 import { cn } from "../lib/utils";
+import { Link } from "react-router-dom";
 type ChatItemProps = {
   index: number;
   chat: any;
@@ -30,7 +31,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     return () => clearTimeout(timeout);
   });
   return (
-    <div
+    <Link
+      to={`/homepage/chats/${chat.id}`}
       onClick={onClick}
       className={cn(
         `relative  ${
@@ -74,7 +76,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           <TiPinOutline className="text-neutral-400" />
         )}
       </button>
-    </div>
+    </Link>
   );
 };
 

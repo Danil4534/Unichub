@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
-import { UserSex } from "../enum/userSex";
+import { UserSex } from "../enum/UserSexEnum";
 
 export type typeStore = {
   activeOtp: boolean;

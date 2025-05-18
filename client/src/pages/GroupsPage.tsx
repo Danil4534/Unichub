@@ -23,29 +23,47 @@ import {
 } from "../components/ui/dropdown-menu";
 
 import { ChevronDown } from "lucide-react";
-import Button from "../components/ui/button";
+import { Button } from "../components/ui/button";
+import { Group } from "../shared/types/Group";
 
 const GroupsPage: React.FC = () => {
   const store = useStore();
-  const [selectedGroup, setSelectedGroup] = useState("All groups");
-  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("All Groups");
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [displayGroups, setDisplayGroups] = useState<Group[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
   const fetchGroups = debounce(async () => {
     try {
       const response = await axios.get(`http://localhost:3000/group`);
-      console.log(response);
       setGroups(response.data);
+      setDisplayGroups(response.data);
     } catch (e) {
       console.log(e);
     }
-  });
-  const filteredResults = groups.filter((item: any) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  }, 300);
+
+  const filterGroups = (filter: string) => {
+    if (filter === "My Group") {
+      const myGroups = groups.filter((group) =>
+        group.students.some((student) => student.id === store.currentUser.id)
+      );
+      setDisplayGroups(myGroups);
+    } else {
+      setDisplayGroups(groups);
+    }
+  };
+  const filteredResults = displayGroups.filter((group) =>
+    group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredResults);
+
   useEffect(() => {
     fetchGroups();
-  }, [searchTerm]);
+  }, []);
+
+  useEffect(() => {
+    filterGroups(selectedGroup);
+  }, [groups, selectedGroup]);
   return (
     <div className="flex flex-col w-full ">
       <div className="w-full flex justify-between items-center mb-2">
@@ -94,7 +112,7 @@ const GroupsPage: React.FC = () => {
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400"
+                className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400 dark:text-white"
               />
             </div>
           </div>

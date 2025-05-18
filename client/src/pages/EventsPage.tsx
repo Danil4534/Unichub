@@ -17,6 +17,7 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 import { cn } from "../lib/utils";
+import { DatePickerWithRange } from "../components/ui/DatePicker";
 
 const EventsPage: React.FC = () => {
   const [events, setEvents] = useState([]);
@@ -139,6 +140,7 @@ const EventsPage: React.FC = () => {
                           </div>
                           <p>{item.description}</p>
                         </div>
+                        <DatePickerWithRange from={item.start} to={item.end} />
                       </AccordionContent>
                     </div>
                   </AccordionItem>

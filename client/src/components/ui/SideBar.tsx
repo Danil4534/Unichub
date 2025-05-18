@@ -3,7 +3,7 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { cn } from "../../lib/utils";
-import { useEndPoint } from "../hooks/useEndPoint";
+import { useEndPoint } from "../../hooks/useEndPoint";
 
 type Links = {
   label: string;

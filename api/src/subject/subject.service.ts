@@ -48,6 +48,9 @@ export class SubjectService {
       include: {
         lessons: true,
         tasks: true,
+        groups: {
+          include: { students: true },
+        },
       },
     });
   }
@@ -56,7 +59,7 @@ export class SubjectService {
     try {
       const subject = this.prisma.subject.findFirst({
         where: { id: id },
-        include: { tasks: true, lessons: true },
+        include: { tasks: true, lessons: true, groups: true },
       });
       return subject;
     } catch (e) {
