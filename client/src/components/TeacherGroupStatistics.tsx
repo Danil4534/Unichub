@@ -2,70 +2,53 @@ import React, { useEffect, useRef } from "react";
 import ApexCharts from "apexcharts";
 
 const chartOptions = {
-  colors: ["#1A56DB", "#FDBA8C"],
   series: [
     {
-      name: "Organic",
-      color: "#1A56DB",
-      data: [
-        { x: "Mon", y: 231 },
-        { x: "Tue", y: 122 },
-        { x: "Wed", y: 63 },
-        { x: "Thu", y: 421 },
-        { x: "Fri", y: 122 },
-        { x: "Sat", y: 323 },
-        { x: "Sun", y: 111 },
-      ],
+      name: "Banned",
+      data: [412, 413, 1731, 412, 1, 1731],
+      color: "#ff0000",
     },
     {
-      name: "Social media",
-      color: "#FDBA8C",
-      data: [
-        { x: "Mon", y: 232 },
-        { x: "Tue", y: 113 },
-        { x: "Wed", y: 341 },
-        { x: "Thu", y: 224 },
-        { x: "Fri", y: 522 },
-        { x: "Sat", y: 411 },
-        { x: "Sun", y: 243 },
-      ],
+      name: "No Ban",
+      data: [643, 413, 765, 412, 1423, 1731],
+      color: "#34d399",
     },
   ],
   chart: {
-    type: "bar",
-    height: "320px",
-    fontFamily: "Inter, sans-serif",
+    height: "90%",
+    maxWidth: "100%",
+    type: "area",
+    fontFamily: "k2d, sans-serif",
+    dropShadow: {
+      enabled: false,
+    },
     toolbar: {
       show: false,
     },
   },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: "70%",
-      borderRadiusApplication: "end",
-      borderRadius: 8,
-    },
-  },
   tooltip: {
-    shared: true,
-    intersect: false,
-    style: {
-      fontFamily: "Inter, sans-serif",
+    enabled: true,
+    x: {
+      show: false,
     },
   },
-  states: {
-    hover: {
-      filter: {
-        type: "darken",
-        value: 1,
-      },
+  legend: {
+    show: true,
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      opacityFrom: 0.55,
+      opacityTo: 0,
+      shade: "#1C64F2",
+      gradientToColors: ["#1C64F2"],
     },
+  },
+  dataLabels: {
+    enabled: false,
   },
   stroke: {
-    show: true,
-    width: 0,
-    colors: ["transparent"],
+    width: 6,
   },
   grid: {
     show: false,
@@ -73,22 +56,40 @@ const chartOptions = {
     padding: {
       left: 2,
       right: 2,
-      top: -14,
+      top: 0,
     },
   },
-  dataLabels: {
-    enabled: false,
-  },
-  legend: {
-    show: false,
-  },
   xaxis: {
-    floating: false,
+    categories: [
+      "01 February",
+      "02 February",
+      "03 February",
+      "04 February",
+      "05 February",
+      "06 February",
+      "07 February",
+    ],
     labels: {
+      show: false,
+    },
+    legend: {
       show: true,
-      style: {
-        fontFamily: "Inter, sans-serif",
-        cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+      position: "top",
+      horizontalAlign: "center",
+      fontFamily: "Inter, sans-serif",
+      fontSize: "14px",
+      labels: {
+        colors: "#333",
+        useSeriesColors: false,
+      },
+      markers: {
+        width: 12,
+        height: 12,
+        radius: 12,
+      },
+      itemMargin: {
+        horizontal: 10,
+        vertical: 5,
       },
     },
     axisBorder: {
@@ -100,9 +101,11 @@ const chartOptions = {
   },
   yaxis: {
     show: false,
-  },
-  fill: {
-    opacity: 1,
+    labels: {
+      formatter: function (value: any) {
+        return value;
+      },
+    },
   },
 };
 
@@ -123,25 +126,9 @@ const UserStatistics: React.FC<UserStatistics> = () => {
   }, []);
 
   return (
-    <div>
-      <div className="flex w-auto  ">
-        <div className=" w-full flex justify-between">
-          {/* <MetricCard
-            label="Groups"
-            value={"2"}
-            infoId="clicks-info"
-            popoverTitle="Clicks growth - Incremental"
-          /> */}
-          {/* <MetricCard
-            label="Teachers"
-            value={teachers.length}
-            infoId="cpc-info"
-            popoverTitle="CPC growth - Incremental"
-          /> */}
-        </div>
-      </div>
+    <>
       <div ref={chartRef} />
-    </div>
+    </>
   );
 };
 

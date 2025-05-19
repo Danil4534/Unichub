@@ -66,7 +66,7 @@ function BigCalendar({ className }: { className: string }) {
   };
 
   return (
-    <div className={cn(className, "p-4 font-k2d")}>
+    <div className={cn(className, "p-2 font-k2d")}>
       {userEvents && (
         <>
           <Calendar
@@ -78,7 +78,7 @@ function BigCalendar({ className }: { className: string }) {
             defaultView="month"
             eventPropGetter={eventStyleGetter}
             onSelectEvent={(event) => setSelectedEvent(event)}
-            style={{ height: "600px" }}
+            style={{ height: "700px" }}
           />
 
           {selectedEvent && (

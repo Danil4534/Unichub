@@ -32,8 +32,10 @@ const ChatsPage: React.FC = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    socketRef.current?.disconnect();
+    const socket = io("http://localhost:3000", { transports: ["websocket"] });
     socketRef.current = socket;
+
     const currentUser = store.currentUser;
     if (!currentUser?.id) return;
 
@@ -44,6 +46,7 @@ const ChatsPage: React.FC = () => {
 
     socket.on("userChats", (userChats: Chat[]) => {
       setUserChats(userChats);
+      console.log(userChats);
     });
     socket.on("getMessages", (receivedMessages: Message[]) => {
       setMessages(receivedMessages);

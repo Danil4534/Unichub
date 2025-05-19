@@ -14,6 +14,7 @@ import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import { Image } from "./ui/Image";
 import { toast } from "sonner";
+import UserStatistics from "./TeacherGroupStatistics";
 
 type RadialChartProps = {
   label: string;
@@ -26,12 +27,23 @@ export const SideBarNav: React.FC = () => {
   const [, setGroups] = useState<RadialChartProps[]>([]);
   const [, setTeachers] = useState<RadialChartProps[]>([]);
   const [, setUsers] = useState<RadialChartProps[]>();
+  const [, setEvents] = useState<RadialChartProps[]>();
+  const [, setTasks] = useState<RadialChartProps[]>();
   const [data, setData] = useState<RadialChartProps[]>([]);
-
+  const handleEvents = async () => {
+    const response = await axios.get(`http://localhost:3000/event`);
+    setEvents(response.data);
+    return { label: "Events", count: response.data.length };
+  };
+  const handleTasks = async () => {
+    const response = await axios.get(`http://localhost:3000/task`);
+    setTasks(response.data);
+    return { label: "Tasks", count: response.data.length };
+  };
   const handleGroups = async () => {
     const response = await axios.get(`http://localhost:3000/group`);
     setGroups(response.data);
-    return { label: "Group", count: response.data.length };
+    return { label: "Groups", count: response.data.length };
   };
   const handleUsers = async () => {
     const response = await axios.get(`http://localhost:3000/user`);
@@ -64,6 +76,8 @@ export const SideBarNav: React.FC = () => {
       try {
         const results = await Promise.all([
           handleGroups(),
+          handleEvents(),
+          handleTasks(),
           handleUsers(),
           handleTeachers(),
           handleStudents(),
@@ -109,7 +123,7 @@ export const SideBarNav: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex h-auto">
-                  <BigCalendar className="w-2/3 h-1/3 animate-rightIn " />
+                  <BigCalendar className="w-2/3 h-full animate-rightIn " />
                   <div className="grid grid-cols-2 gap-0 h-1/6 ">
                     {data.map((item: any, index: number) => (
                       <div key={index}>
@@ -132,9 +146,10 @@ export const SideBarNav: React.FC = () => {
                 <EventCalendar />
                 <Events />
               </div>
-              {/* <div className=" w-[380px] rounded-2xl border border-neutral-200 dark:border-neutral-600 p-4 animate-rightIn">
-                <UserStatistics users={users} />
-              </div> */}
+              <div className="w-[380px] h-full rounded-2xl border border-neutral-200 dark:border-neutral-600 p-4 animate-rightIn">
+                <h1>Banned Users Statistics</h1>
+                <UserStatistics />
+              </div>
             </div>
           </div>
         </div>

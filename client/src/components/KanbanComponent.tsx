@@ -9,7 +9,6 @@ import {
   KanbanProvider,
 } from "./ui/shadcn-io/kanban";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { ScrollArea } from "./ui/scroll-area";
 
 // Inline content
 const today = new Date();

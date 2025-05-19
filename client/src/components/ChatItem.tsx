@@ -41,7 +41,12 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   const handleDeleteChat = (chatId: string) => {
     socketRef.current?.emit("deleteChat", chatId);
   };
-
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+    return ` ${hours}:${minutes}`;
+  };
   useEffect(() => {
     const socket = io("http://localhost:3000");
     socketRef.current = socket;
@@ -84,10 +89,11 @@ export const ChatItem: React.FC<ChatItemProps> = ({
         <div className="text-sm flex-col fr">
           {`${chat.user2.name} ${chat.user2.surname}`}
         </div>
-
-        <div className="  text-xs text-neutral-300">
-          Last : {lastMessage?.content}
-        </div>
+        {lastMessage && (
+          <div className="  text-xs text-neutral-300">
+            Last : {lastMessage?.content} {formatDate(lastMessage?.created)}
+          </div>
+        )}
       </div>
 
       <div className="absolute top-2 right-2">

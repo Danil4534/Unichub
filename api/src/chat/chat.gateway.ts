@@ -40,7 +40,7 @@ export class ChatGateway {
   @SubscribeMessage('getUserChats')
   async getUserChats(@ConnectedSocket() client, @MessageBody() userId: string) {
     const userChats = await this.chatService.getAllUserChats(userId);
-    client.emit('userChats', userChats);
+    this.server.emit('userChats', userChats);
   }
 
   @SubscribeMessage('sendMessage')

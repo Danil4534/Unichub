@@ -58,20 +58,20 @@ export class AuthService {
       },
     });
 
-    const accessToken = this.jwtService.sign(
+    const accessToken = await this.jwtService.signAsync(
       { userId: foundUser },
       { expiresIn: '15m' },
     );
-
+    console.log(accessToken);
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: false,
       sameSite: 'lax',
       maxAge: 15 * 60 * 1000,
       path: '/',
     });
 
-    const refreshToken = this.jwtService.sign(
+    const refreshToken = this.jwtService.signAsync(
       { userId: foundUser },
       { expiresIn: '30d' },
     );

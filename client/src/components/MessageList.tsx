@@ -10,6 +10,7 @@ import { LuSmilePlus } from "react-icons/lu";
 import { ScrollArea } from "./ui/scroll-area";
 import { OpenChat } from "../shared/types/OpenChat";
 import { Chat } from "../shared/types/Chat";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 type MessageListProps = {
   openChat?: OpenChat | undefined;
@@ -33,7 +34,7 @@ const MessageList: React.FC<MessageListProps> = ({
 }) => {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     return ` ${hours}:${minutes}`;
   };
@@ -120,17 +121,37 @@ const MessageList: React.FC<MessageListProps> = ({
                         key={index}
                         className={`p-2 max-w-[200px] h-full ${
                           message.userId === store.currentUser.id
-                            ? "bg-white border rounded-l-xl rounded-tr-xl text-black self-end "
-                            : "bg-neutral-200 rounded-tl-xl rounded-r-xl text-black self-start "
+                            ? " flex gap-2 flex-row-reverse items-center self-end"
+                            : "flex gap-2 flex-row-reverse items-center self-start "
                         }`}
                       >
-                        <p className="text-wrap break-all h-auto">
-                          {message.content}
-                        </p>
-                        <div className="text-xs text-neutral-400">
-                          {formatDate(message.created)}
+                        <div
+                          className={`${
+                            message.userId === store.currentUser.id
+                              ? "p-2 bg-white border rounded-l-xl rounded-tr-xl dark:bg-neutral-900"
+                              : "p-2 bg-white border rounded-r-xl rounded-tl-xl self-end dark:bg-neutral-700"
+                          }`}
+                        >
+                          <p className="text-wrap break-all h-auto">
+                            {message.content}
+                          </p>
+                          <div className="text-xs text-end text-neutral-400">
+                            {formatDate(message.created)}
+                          </div>
+                          <div ref={bottomRef} />
                         </div>
-                        <div ref={bottomRef} />
+                        <Avatar>
+                          <AvatarImage
+                            src={
+                              message.userId === store.currentUser.id
+                                ? store.currentUser.img
+                                : getChatPartner(
+                                    currentChat,
+                                    store.currentUser.id
+                                  ).img
+                            }
+                          />
+                        </Avatar>
                       </div>
                     ))}
                   </>
