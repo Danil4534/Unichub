@@ -3,7 +3,7 @@ import { Image } from "./ui/Image";
 import { useStore } from "../store/store";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 
-import { TextArea } from "./ui/TextArea";
+import { TextAreaCustom } from "./ui/TextAreaCustom";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import { TbSend } from "react-icons/tb";
 import { LuSmilePlus } from "react-icons/lu";
@@ -139,7 +139,7 @@ const MessageList: React.FC<MessageListProps> = ({
             </ScrollArea>
             <div className="flex w-full h-auto justify-between gap-2 mt-4 ">
               <div className="w-full relative flex items-center justify-center">
-                <TextArea
+                <TextAreaCustom
                   placeholder="Type a message..."
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}

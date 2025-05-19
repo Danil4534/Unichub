@@ -5,6 +5,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Image } from "./ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
+import { MdAccessTime } from "react-icons/md";
 import {
   Accordion,
   AccordionContent,
@@ -25,14 +26,9 @@ export type EventTypes = {
 };
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
-
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dayOfWeek = daysOfWeek[date.getUTCDay()];
-  const dayOfMonth = String(date.getUTCDate()).padStart(2, "0");
   const hours = String(date.getUTCHours()).padStart(2, "0");
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-
-  return `${dayOfWeek} ${dayOfMonth}, ${hours}:${minutes}`;
+  return ` ${hours}:${minutes} `;
 };
 
 const Events: React.FC = () => {
@@ -96,10 +92,18 @@ const Events: React.FC = () => {
                     </p>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <span className="text-xs underline lowercase">Start</span>{" "}
-                    {formatDate(item.start)} -{" "}
-                    <span className="text-xs underline lowercase"> End</span>{" "}
-                    {formatDate(item.end)}
+                    <div className="flex items-center flex-row gap-4 my-1 px-4">
+                      <span className="text-xs underline lowercase flex gap-2 items-center">
+                        <MdAccessTime />
+                        Start{" "}
+                      </span>
+                      {formatDate(item.start)}
+                      <span className="text-xs underline lowercase flex gap-2 items-center">
+                        <MdAccessTime />
+                        end{" "}
+                      </span>
+                      {formatDate(item.end)}
+                    </div>
                     <DatePickerWithRange from={item.start} to={item.end} />
                   </AccordionContent>
                 </AccordionItem>

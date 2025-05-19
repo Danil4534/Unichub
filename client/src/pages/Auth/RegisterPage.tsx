@@ -5,7 +5,7 @@ import LaptopImage from "../../assets/icons/LaptopImage.svg";
 import BackgroundImage from "../../assets/icons/Background.svg";
 const RegisterPage: React.FC = () => {
   return (
-    <div className="relative flex justify-center gap-20 items-center w-full h-screen  overflow-hidden bg-white">
+    <div className="relative flex justify-center gap-20 items-center w-full h-screen  overflow-hidden ">
       <div className="z-50">
         <RegisterForm />
       </div>

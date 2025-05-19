@@ -3,7 +3,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import axios from "axios";
 import { debounce } from "lodash";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import { Image } from "../components/ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 
@@ -18,6 +18,7 @@ import {
 } from "../components/ui/accordion";
 import { cn } from "../lib/utils";
 import { DatePickerWithRange } from "../components/ui/DatePicker";
+import { CreateEventModal } from "../components/modalViews/CreateEventModal";
 
 const EventsPage: React.FC = () => {
   const [events, setEvents] = useState([]);
@@ -69,16 +70,30 @@ const EventsPage: React.FC = () => {
       <div className="flex h-[calc(100vh-180px)] w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
         <div className="flex items-center justify-between p-4 ">
           <Breadcrumbs />
-          <div className="flex w-full gap-2 justify-end">
-            <div className="relative w-1/5">
-              <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder=" Search..."
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400 dark:text-white"
-              />
+          <div className="flex w-full gap-4 ">
+            <div className="flex w-full gap-2 justify-end">
+              <div className="relative w-1/5">
+                <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <CustomInput
+                  type="text"
+                  placeholder=" Search..."
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400 dark:text-white"
+                />
+              </div>
             </div>
+            {store.currentUser.roles.includes("Admin") ||
+            store.currentUser.roles.includes("Teacher") ? (
+              <CreateEventModal
+                trigger={
+                  <div className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
+                    Create Event
+                  </div>
+                }
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         {filteredResults.length == 0 ? (

@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { Image } from "../../ui/Image";
 import { LiaTrashAltSolid } from "react-icons/lia";
 import { useStore } from "../../../store/store";
-import { Input } from "../../ui/Input";
+import { CustomInput } from "../../ui/CustomInput";
 import { CiSearch } from "react-icons/ci";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
@@ -31,7 +31,7 @@ import RatingsTable from "./components/Table";
 import { cn } from "../../../lib/utils";
 import { Link } from "react-router-dom";
 import { DatePickerWithRange } from "../../ui/DatePicker";
-import { CreateEventModal } from "../CreateEventModal";
+import { Dialog } from "@radix-ui/react-dialog";
 
 type GroupModalProps = {
   group: any;
@@ -124,10 +124,26 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
       setSubjects((prev: any) =>
         prev.filter((subject: { id: string }) => subject.id !== subjectId)
       );
-    } catch (e) {
-      console.log(e);
+      toast.success("Subject was successfully deleted from group");
+    } catch (e: any) {
+      toast.error(e);
     }
   };
+  const handleDeleteEventFromGroup = async (eventId: string) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/group/${group.id}/unInviteSubjectForGroup/${eventId}`
+      );
+      console.log(response);
+      setEvents((prev: any) =>
+        prev.filter((event: { id: string }) => event.id !== eventId)
+      );
+      toast.success("Event was successfully deleted from group");
+    } catch (e: any) {
+      toast.error(e);
+    }
+  };
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
 
@@ -150,7 +166,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
     setBanned(students?.filter((item: any) => item.banned === true));
   }, [students]);
   return (
-    <>
+    <Dialog>
       <div className="w-full outline-none">
         <div className="flex justify-between items-start">
           <AlertDialogTitle>
@@ -208,7 +224,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
               )}
               <div className="relative">
                 <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <Input
+                <CustomInput
                   type="text"
                   placeholder=" Search..."
                   className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-white"
@@ -274,7 +290,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
               )}
               <div className="relative">
                 <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <Input
+                <CustomInput
                   type="text"
                   placeholder=" Search..."
                   className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400"
@@ -384,19 +400,6 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
           </TabsContent>
           <TabsContent value="Events">
             <div className="outline-none flex flex-col justify-between p-0 my-2 h-full">
-              {store.currentUser.roles.includes("Admin") ||
-              store.currentUser.roles.includes("Teacher") ? (
-                <AlertDialog>
-                  <AlertDialogTrigger className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
-                    Create Event
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <CreateEventModal />
-                  </AlertDialogContent>
-                </AlertDialog>
-              ) : (
-                <></>
-              )}
               <div className="mt-4 overflow-y-scroll h-96 w-full">
                 <Accordion
                   type="single"
@@ -455,7 +458,12 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                               />
                               {store.currentUser.roles.includes("Admin") && (
                                 <div>
-                                  <button className="w-12 flex justify-center items-center  h-7 text-sm text-center p-1.5 font-k2d bg-white dark:bg-transparent rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer hover:border-red-400 transition-colors duration-75">
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteEventFromGroup(item.id)
+                                    }
+                                    className="w-12 flex justify-center items-center  h-7 text-sm text-center p-1.5 font-k2d bg-white dark:bg-transparent rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer hover:border-red-400 transition-colors duration-75"
+                                  >
                                     <LiaTrashAltSolid size={20} />
                                   </button>
                                 </div>
@@ -488,6 +496,6 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
         </AlertDialogCancel>
       </div>
       <Toaster />
-    </>
+    </Dialog>
   );
 };

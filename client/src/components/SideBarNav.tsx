@@ -13,6 +13,7 @@ import { useStore } from "../store/store";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import { Image } from "./ui/Image";
+import { toast } from "sonner";
 
 type RadialChartProps = {
   label: string;
@@ -68,8 +69,8 @@ export const SideBarNav: React.FC = () => {
           handleStudents(),
         ]);
         setData(results);
-      } catch (e) {
-        console.log(e);
+      } catch (e: any) {
+        toast.error(e);
       }
     };
     fetchData();

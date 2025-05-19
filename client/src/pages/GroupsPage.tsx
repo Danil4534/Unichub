@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import {
@@ -108,7 +108,7 @@ const GroupsPage: React.FC = () => {
             </DropdownMenu>
             <div className="relative w-1/6">
               <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
+              <CustomInput
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}

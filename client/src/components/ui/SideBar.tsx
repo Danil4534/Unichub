@@ -6,8 +6,8 @@ import { cn } from "../../lib/utils";
 import { useEndPoint } from "../../hooks/useEndPoint";
 
 type Links = {
-  label: string;
-  href: string;
+  label?: string;
+  href?: string;
   icon: React.JSX.Element | React.ReactNode;
 };
 
@@ -158,23 +158,26 @@ export const MobileSidebar = ({
 export const SidebarLink = ({
   link,
   className,
+  onClickEvent,
   ...props
 }: {
   link: Links;
   className?: string;
   props?: LinkProps;
+  onClickEvent?: () => void;
 }) => {
   const { open, animate } = useSidebar();
   const endpoint = useEndPoint();
 
   return (
     <NavLink
-      to={link.href}
+      to={link.href ? link.href : ""}
       className={cn(
         "flex items-center justify-start gap-2 group/sidebar px-2 py-2 hover:bg-neutral-200 rounded-lg transition-colors duration-200 dark:text-white dark:hover:bg-neutral-600",
         className,
         endpoint == link.href && "border-2 border-emerald-400"
       )}
+      onClick={onClickEvent}
       {...props}
     >
       {link.icon}

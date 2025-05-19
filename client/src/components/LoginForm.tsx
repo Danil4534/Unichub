@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
     } catch (e: any) {
       if (e) {
         console.log(e);
-        toast("❌ Something went wrong. Please try again.");
+        toast.error("❌ Something went wrong. Please try again.");
       }
     }
   };

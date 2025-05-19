@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import axios from "axios";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import { Image } from "../components/ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
@@ -20,6 +20,7 @@ import { FaUser, FaUsers } from "react-icons/fa";
 
 import { Subject } from "../shared/types/Subject";
 import { Button } from "../components/ui/button";
+import { toast } from "sonner";
 const SubjectsPage: React.FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [displaySubjects, setDisplaySubject] = useState<Subject[]>([]);
@@ -33,8 +34,8 @@ const SubjectsPage: React.FC = () => {
       const responseSubjects = await axios.get(`http://localhost:3000/subject`);
       setSubjects(responseSubjects.data);
       setDisplaySubject(responseSubjects.data);
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      toast.error(e);
     }
   });
 
@@ -107,7 +108,7 @@ const SubjectsPage: React.FC = () => {
             </DropdownMenu>
             <div className="relative w-1/6">
               <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
+              <CustomInput
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}

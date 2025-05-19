@@ -2,31 +2,14 @@ import { AiOutlineMessage, AiOutlineSun } from "react-icons/ai";
 import { IoCloudyNightOutline, IoNotificationsOutline } from "react-icons/io5";
 import { useStore } from "../store/store";
 import { Image } from "./ui/Image";
-
-import axios from "axios";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SearchInput from "./SearchInput";
 import { useEffect } from "react";
 import { Switch } from "./ui/switch";
 import { ChatSheet } from "./ChatSheet";
-import ButtonLogout from "./ui/ButtonLogout";
 
 const Header: React.FC = () => {
   const store = useStore();
-  const navigate = useNavigate();
-  const LogoutUser = async () => {
-    try {
-      await axios.post(
-        `http://localhost:3000/auth/logout/${store.currentUser.id}`
-      );
-      store.setActiveLoginForm();
-      localStorage.removeItem("theme");
-      navigate("/");
-      store.clearCookie();
-    } catch (e) {
-      console.log(e);
-    }
-  };
   useEffect(() => {
     store.setCurrentUser();
   }, []);
@@ -79,11 +62,6 @@ const Header: React.FC = () => {
           <IoNotificationsOutline size={20} color="A6A6A6" />
         </div>
         <ChatSheet trigger={<AiOutlineMessage size={20} color="A6A6A6" />} />
-        <ButtonLogout
-          type="button"
-          content={"Logout"}
-          action={() => LogoutUser()}
-        />
       </div>
     </header>
   );

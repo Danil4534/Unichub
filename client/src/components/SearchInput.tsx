@@ -1,7 +1,7 @@
 // import { useState, useEffect } from "react";
 // import axios from "axios";
 // import { debounce } from "lodash";
-import { Input } from "./ui/Input";
+import { CustomInput } from "./ui/CustomInput";
 import { CiSearch } from "react-icons/ci";
 import { cn } from "../lib/utils";
 
@@ -31,7 +31,7 @@ export default function SearchInput({ className }: { className: string }) {
     <div className="p-4">
       <div className={cn(className, "relative")}>
         <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-        <Input
+        <CustomInput
           type="text"
           placeholder=" Search..."
           className={cn(className, "caret-[#34d399] dark:bg-neutral-800")}

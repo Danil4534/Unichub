@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import { Input } from "./Input";
+import { CustomInput } from "./CustomInput";
 
 interface FormikInputProps {
   name: string;
@@ -17,14 +17,14 @@ export const FormikInput: React.FC<FormikInputProps> = ({
   const [field, meta] = useField(name);
   return (
     <div>
-      <Input
+      <CustomInput
         {...field}
         {...props}
         value={field.value ?? ""}
         className={meta.error && "border-red-600"}
       >
         {children}
-      </Input>
+      </CustomInput>
       {meta.touched && meta.error && (
         <div className="text-red-500 text-sm ml-2">{meta.error}</div>
       )}

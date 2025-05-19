@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import { Image } from "../components/ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import { io } from "socket.io-client";
@@ -11,6 +11,8 @@ import { useStore } from "../store/store";
 import { cn } from "../lib/utils";
 import StudentIcon from "../assets/icons/icon _Users_Light.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
+import { toast } from "sonner";
+import { Link } from "react-router";
 
 const StudentsPage: React.FC = () => {
   const [students, setStudents] = useState([]);
@@ -26,8 +28,8 @@ const StudentsPage: React.FC = () => {
         `http://localhost:3000/user?where=${where}`
       );
       setStudents(response.data);
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      toast.error(e);
     }
   });
   const filteredResults = students.filter((item: any) =>
@@ -42,7 +44,8 @@ const StudentsPage: React.FC = () => {
 
   const handleCreateNewChat = (currentUserId: string, userId: string) => {
     if (!socket) return;
-    socket.emit("createChat", { userId1: currentUserId, userId2: userId });
+    if (socket.emit("create"))
+      socket.emit("createChat", { userId1: currentUserId, userId2: userId });
   };
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const StudentsPage: React.FC = () => {
           <div className="flex w-full gap-2 justify-end">
             <div className="relative w-1/5">
               <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
+              <CustomInput
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -152,14 +155,15 @@ const StudentsPage: React.FC = () => {
                           ))}
                         </div>
 
-                        <button
+                        <Link
+                          to={`/homepage/chats/${item.id}`}
                           onClick={() =>
                             handleCreateNewChat(store.currentUser.id, item.id)
                           }
                           className=" absolute right-2 bottom-2 mt-2 rounded-xl bg-slate-800 text-white px-4 py-2 text-sm hover:bg-emerald-600 transition"
                         >
                           Send Message
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

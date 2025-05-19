@@ -9,6 +9,11 @@ import MessageIcon from "../assets/icons/Message.svg";
 import EventsIcon from "../assets/icons/Events.svg";
 import { Logo, LogoIcon } from "./Logo";
 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useStore } from "../store/store";
+import { CiLogout } from "react-icons/ci";
+
 type SideBarContentProps = {
   open: boolean;
 };
@@ -40,7 +45,6 @@ export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
       href: "subjects",
       icon: <Image src={BooksIcon} className="w-4" />,
     },
-
     {
       label: "Events",
       href: "events",
@@ -51,7 +55,26 @@ export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
       href: "chats",
       icon: <Image src={MessageIcon} className="w-4" />,
     },
+    {
+      label: "Logout",
+      href: "#",
+      icon: <CiLogout className="w-4 h-4" />,
+      action: () => LogoutUser(),
+    },
   ];
+  const store = useStore();
+  const navigate = useNavigate();
+  const LogoutUser = async () => {
+    try {
+      await axios.post(
+        `http://localhost:3000/auth/logout/${store.currentUser.id}`
+      );
+      store.setActiveLoginForm();
+      localStorage.removeItem("theme");
+      navigate("/");
+      store.clearCookie();
+    } catch (e) {}
+  };
   return (
     <>
       <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
@@ -65,9 +88,15 @@ export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
         >
           <p>MENU</p>
           {links.map((link, idx) => (
-            <SidebarLink key={idx} link={link} />
+            <SidebarLink key={idx} link={link} onClickEvent={link.action} />
           ))}
         </div>
+
+        {/* {open ? (
+         
+        ) : (
+          <></>
+        )} */}
       </div>
     </>
   );

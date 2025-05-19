@@ -8,13 +8,14 @@ import { Sidebar, SidebarBody } from "../components/ui/SideBar";
 import { TiPinOutline } from "react-icons/ti";
 import { RiUnpinLine } from "react-icons/ri";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+
 import { ScrollArea } from "../components/ui/scroll-area";
 import ChatItem from "../components/ChatItem";
 import MessageList from "../components/MessageList";
 import { Chat } from "../shared/types/Chat";
 import { Message } from "../shared/types/Message";
 import { OpenChat } from "../shared/types/OpenChat";
+import { CustomInput } from "../components/ui/CustomInput";
 
 const ChatsPage: React.FC = () => {
   const open = true;
@@ -22,6 +23,7 @@ const ChatsPage: React.FC = () => {
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [userChats, setUserChats] = useState<Chat[]>([]);
+  const [lastMessages, setLastMessages] = useState<Record<string, Message>>({});
   const [pinnedChats, setPinnedChats] = useState<Chat[]>([]);
   const [openChat, setOpenChat] = useState<OpenChat | undefined>();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -43,15 +45,25 @@ const ChatsPage: React.FC = () => {
     socket.on("userChats", (userChats: Chat[]) => {
       setUserChats(userChats);
     });
-
     socket.on("getMessages", (receivedMessages: Message[]) => {
       setMessages(receivedMessages);
+      if (receivedMessages.length === 0) return;
+      const lastMsg = receivedMessages[receivedMessages.length - 1];
+      setLastMessages((prev) => ({
+        ...prev,
+        [lastMsg.chatId]: lastMsg,
+      }));
     });
 
     socket.on("message", (message: Message) => {
       if (message.chatId === openChat?.chatId) {
         setMessages((prev) => [...prev, message]);
       }
+
+      setLastMessages((prev) => ({
+        ...prev,
+        [message.chatId]: message,
+      }));
     });
 
     return () => {
@@ -117,7 +129,7 @@ const ChatsPage: React.FC = () => {
           <SidebarBody className="rounded-lg h-full py-2">
             <div className="relative w-full">
               <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
+              <CustomInput
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -138,6 +150,7 @@ const ChatsPage: React.FC = () => {
                         key={chat.id}
                         chat={chat}
                         index={index}
+                        lastMessage={lastMessages[chat.id]}
                         className="rounded-lg dark:bg-neutral-600"
                         pinnedChats={pinnedChats}
                         onClick={() =>
@@ -165,6 +178,7 @@ const ChatsPage: React.FC = () => {
                     key={chat.id}
                     chat={chat}
                     index={index}
+                    lastMessage={lastMessages[chat.id]}
                     pinnedChats={pinnedChats}
                     className="rounded-lg dark:bg-neutral-600"
                     onClick={() => setOpenChat({ open: true, chatId: chat.id })}
@@ -176,7 +190,7 @@ const ChatsPage: React.FC = () => {
           </SidebarBody>
         </Sidebar>
 
-        <div className="w-full  relative">
+        <div className="w-full relative">
           <MessageList
             openChat={openChat}
             emojiOpen={emojiOpen}

@@ -11,7 +11,7 @@ const LoginPage: React.FC = () => {
   }, []);
   return (
     <>
-      <div className="relative flex justify-center gap-20 items-center w-full h-screen  overflow-hidden bg-white">
+      <div className="relative flex justify-center gap-20 items-center w-full h-screen bg-white  overflow-hidden ">
         <div className="z-20">
           <LoginForm />
         </div>

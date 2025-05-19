@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../ui/table";
-import { Input } from "../../../ui/Input";
+import { CustomInput } from "../../../ui/CustomInput";
 
 import { ChevronDown } from "lucide-react";
 import {
@@ -170,7 +170,7 @@ export default function RatingsTable({
       <div className="flex justify-between  items-center py-4">
         <div className="relative w-1/6">
           <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
+          <CustomInput
             placeholder="Search..."
             onChange={(e) =>
               table.getColumn("2")?.setFilterValue(e.target.value)

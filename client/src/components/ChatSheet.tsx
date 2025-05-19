@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useStore } from "../store/store";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "./ui/Input";
+import { CustomInput } from "./ui/CustomInput";
 import { RiUnpinLine } from "react-icons/ri";
 import { TiPinOutline } from "react-icons/ti";
 import ChatItem from "./ChatItem";
@@ -126,10 +126,10 @@ export const ChatSheet: React.FC<ChatSheetProps> = ({ trigger }) => {
                 </h1>
                 <div className="relative w-3/6">
                   <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <Input
+                  <CustomInput
                     type="text"
                     placeholder=" Search..."
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e: any) => setSearchTerm(e.target.value)}
                     className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400"
                   />
                 </div>

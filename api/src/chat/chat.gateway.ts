@@ -61,4 +61,12 @@ export class ChatGateway {
     client.emit('getMessages', messages);
     return messages;
   }
+  @SubscribeMessage('deleteChat')
+  async handleDeleteChat(
+    @MessageBody() chatId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const messages = await this.chatService.deleteChat(chatId);
+    return messages;
+  }
 }

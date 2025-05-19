@@ -80,4 +80,10 @@ export class ChatService {
       },
     });
   }
+
+  async deleteChat(chatId) {
+    return this.prisma.chat.delete({
+      where: { id: chatId },
+    });
+  }
 }

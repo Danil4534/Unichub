@@ -14,9 +14,10 @@ import {
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import { Subject } from "../shared/types/Subject";
 import { Task } from "../shared/types/Task";
+import KanbanComponent from "../components/KanbanComponent";
 
 const SubjectPage: React.FC = () => {
   const { id } = useParams();
@@ -60,7 +61,7 @@ const SubjectPage: React.FC = () => {
           <h1 className="font-k2d text-4xl uppercase">Unichub</h1>
         </div>
       </div>
-      <div className="flex h-full w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
+      <div className="flex h-[calc(100vh-160px)]  w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
         <div className="flex items-center justify-between ">
           <Breadcrumbs />
           <div className="flex gap-2 items-center">
@@ -90,7 +91,7 @@ const SubjectPage: React.FC = () => {
               <TabsTrigger value="Lessons">
                 Lessons {subject?.lessons.length}
               </TabsTrigger>
-              <TabsTrigger value="Students">Students</TabsTrigger>
+
               <TabsTrigger value="Grades">Grades</TabsTrigger>
             </TabsList>
             <TabsContent value="Tasks">
@@ -99,7 +100,7 @@ const SubjectPage: React.FC = () => {
                   <div className="flex w-full gap-2 justify-end">
                     <div className="relative w-1/5">
                       <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <Input
+                      <CustomInput
                         type="text"
                         placeholder=" Search..."
                         className="caret-[#34d399] dark:bg-neutral-800 dark:placeholder:text-neutral-400 dark:text-white"
@@ -119,14 +120,12 @@ const SubjectPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="w-full flex gap-2">
-                  <div></div>
-                  <div></div>
+                <div>
+                  <KanbanComponent />
                 </div>
               </>
             </TabsContent>
             <TabsContent value="Lessons"></TabsContent>
-            <TabsContent value="Students"></TabsContent>
             <TabsContent value="Grades"></TabsContent>
           </Tabs>
         </div>

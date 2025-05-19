@@ -3,7 +3,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import axios from "axios";
 import { debounce } from "lodash";
 import { CiSearch } from "react-icons/ci";
-import { Input } from "../components/ui/Input";
+import { CustomInput } from "../components/ui/CustomInput";
 import { Image } from "../components/ui/Image";
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 
@@ -12,6 +12,7 @@ import { useStore } from "../store/store";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import TeacherIcon from "../assets/icons/icon _teacher_Light.svg";
 import { cn } from "../lib/utils";
+import { toast } from "sonner";
 const TeachersPage: React.FC = () => {
   const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,8 +28,8 @@ const TeachersPage: React.FC = () => {
         `http://localhost:3000/user?where=${where}`
       );
       setTeachers(response.data);
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      toast.error(e);
     }
   });
   const filteredResults = teachers.filter((item: any) =>
@@ -65,7 +66,7 @@ const TeachersPage: React.FC = () => {
           <div className="flex w-full gap-2 justify-end">
             <div className="relative w-1/5">
               <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
+              <CustomInput
                 type="text"
                 placeholder=" Search..."
                 onChange={(e) => setSearchTerm(e.target.value)}
