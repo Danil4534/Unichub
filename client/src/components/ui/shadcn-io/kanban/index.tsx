@@ -10,7 +10,6 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import type { ReactNode } from "react";
 import { cn } from "../../../../lib/utils";
 import { Card } from "../../card";
-import { ScrollArea } from "../../scroll-area";
 
 export type { DragEndEvent } from "@dnd-kit/core";
 
