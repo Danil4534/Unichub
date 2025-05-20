@@ -1,12 +1,11 @@
-import { Subject } from './../subject/entities/subject.entity';
-import { TaskGrade } from './../task-grade/entities/task-grade.entity';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+
 import * as ExcelJS from 'exceljs';
 import { join } from 'path';
 import { Response } from 'express';
 import * as fs from 'fs';
 import * as PDFDocument from 'pdfkit';
+import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class GradeBookService {
   constructor(private prisma: PrismaService) {}
