@@ -16,7 +16,7 @@ import { StorageManagerModule } from './storage-manager/storage-manager.module';
 
 import { GradeBookModule } from './grade-book/grade-book.module';
 import { TaskGradeModule } from './task-grade/task-grade.module';
-import { TestModule } from './test/test.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { TestModule } from './test/test.module';
 
     GradeBookModule,
     TaskGradeModule,
-    TestModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

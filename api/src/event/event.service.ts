@@ -3,10 +3,14 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, Event, User } from '@prisma/client';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class EventService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationService: NotificationService,
+  ) {}
 
   async findAllEvents(params: {
     skip?: number;
@@ -28,7 +32,7 @@ export class EventService {
         this.prisma.event.update({
           where: { id: event.id },
           data: { status: now > event.start ? 'Old' : 'New' },
-          include: { Group: true },
+          include: { group: true },
         }),
       ),
     );
@@ -62,10 +66,37 @@ export class EventService {
         },
       });
 
+      const groupId = createEventDto.group?.connect.id;
+      const groupWithUsers = await this.prisma.group.findUnique({
+        where: { id: groupId },
+        include: { students: true },
+      });
+
+      console.log(groupId);
+      console.log(groupWithUsers);
+      if (!groupWithUsers) {
+        throw new Error('Group not found');
+      }
+
+      await Promise.all(
+        groupWithUsers.students.map((user) =>
+          this.notificationService.create({
+            title: 'New event',
+            isRead: false,
+            created: new Date(),
+            description: createEventDto.title,
+            type: 'Event',
+            userId: user.id,
+          }),
+        ),
+      );
       return newEvent;
     } catch (e) {
       console.log(e);
-      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to create event',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

@@ -75,7 +75,7 @@ export class LessonService {
           status: 'New',
           groupId: groupId,
         };
-        return await this.eventService.createEvent(newEvent);
+        // return await this.eventService.createEvent(newEvent);
       });
       await Promise.all(eventPromises);
       return newLesson;

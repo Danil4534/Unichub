@@ -62,12 +62,12 @@ const chartOptions = {
   xaxis: {
     categories: [
       "01 February",
-      "02 February",
-      "03 February",
-      "04 February",
-      "05 February",
-      "06 February",
-      "07 February",
+      "01 March",
+      "01 April",
+      "01 May",
+      "01 June",
+      "01 July",
+      "01 August",
     ],
     labels: {
       show: false,

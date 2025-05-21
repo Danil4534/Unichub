@@ -8,29 +8,30 @@ datasource db {
 }
 
 model User {
-  id            String      @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String?
   surname       String?
-  email         String?     @unique
-  phone         String?     @unique
+  email         String?        @unique
+  phone         String?        @unique
   password      String?
   img           String?
   sex           UserSex?
   info          String?
-  otpCode       Int?        @unique
+  otpCode       Int?           @unique
   otpExpiresAt  DateTime?
-  banned        Boolean?    @default(false)
-  activeStatus  UserStatus? @default(Offline)
-  roles         Role[]      @default([Student])
-  created       DateTime?   @default(now())
-  Group         Group?      @relation("UserGroup", fields: [groupId], references: [id], onUpdate: Cascade)
+  banned        Boolean?       @default(false)
+  activeStatus  UserStatus?    @default(Offline)
+  roles         Role[]         @default([Student])
+  created       DateTime?      @default(now())
+  Group         Group?         @relation("UserGroup", fields: [groupId], references: [id], onUpdate: Cascade)
   groupId       String?
-  sentChats     Chat[]      @relation("User1Chats")
-  receivedChats Chat[]      @relation("User2Chats")
+  sentChats     Chat[]         @relation("User1Chats")
+  receivedChats Chat[]         @relation("User2Chats")
   Comment       Comment[]
   GradeBook     GradeBook[]
   TaskGrade     TaskGrade[]
   Message       Message[]
+  Notification  Notification[]
 }
 
 model Chat {
@@ -71,7 +72,7 @@ model Event {
   end         DateTime
   status      String
   created     DateTime
-  Group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   groupId     String?
 }
 
@@ -115,6 +116,25 @@ model Task {
   subjectId   String?
   TaskGrade   TaskGrade[]
   taskGroups  TaskGroup[]
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  title       String
+  description String
+  isRead      Boolean
+  user        User             @relation(fields: [userId], references: [id])
+  created     DateTime
+  userId      String
+  type        NotificationType
+}
+
+enum NotificationType {
+  General
+  Message
+  Task
+  Event
+  Grade
 }
 
 model TaskGroup {

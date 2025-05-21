@@ -14,6 +14,7 @@ import {
 } from "./ui/accordion";
 import { cn } from "../lib/utils";
 import { DatePickerWithRange } from "./ui/DatePicker";
+import { useFormatDate } from "../hooks/useFormatDate";
 export type EventTypes = {
   id: string;
   title: string;
@@ -23,12 +24,6 @@ export type EventTypes = {
   status: String;
   created: Date;
   groupId: string;
-};
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  return ` ${hours}:${minutes} `;
 };
 
 const Events: React.FC = () => {
@@ -97,12 +92,12 @@ const Events: React.FC = () => {
                         <MdAccessTime />
                         Start{" "}
                       </span>
-                      {formatDate(item.start)}
+                      {useFormatDate(item.start)}
                       <span className="text-xs underline lowercase flex gap-2 items-center">
                         <MdAccessTime />
                         end{" "}
                       </span>
-                      {formatDate(item.end)}
+                      {useFormatDate(item.end)}
                     </div>
                     <DatePickerWithRange from={item.start} to={item.end} />
                   </AccordionContent>

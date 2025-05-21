@@ -4,13 +4,26 @@ import { useStore } from "../store/store";
 import { Image } from "./ui/Image";
 import { NavLink } from "react-router-dom";
 import SearchInput from "./SearchInput";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Switch } from "./ui/switch";
 import { ChatSheet } from "./ChatSheet";
+import { io, Socket } from "socket.io-client";
 
 const Header: React.FC = () => {
   const store = useStore();
+
+  const socketRef = useRef<Socket | null>(null);
+
   useEffect(() => {
+    socketRef.current?.disconnect();
+    const socket = io("http://localhost:3000");
+    socketRef.current = socket;
+
+    socket.emit("getNotifications");
+    socket.on("notifications", (data) => {
+      console.log(data);
+    });
+
     store.setCurrentUser();
   }, []);
   return (

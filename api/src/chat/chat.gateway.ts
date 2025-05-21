@@ -38,7 +38,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('getUserChats')
-  async getUserChats(@ConnectedSocket() client, @MessageBody() userId: string) {
+  async getUserChats(@MessageBody() userId: string) {
     const userChats = await this.chatService.getAllUserChats(userId);
     this.server.emit('userChats', userChats);
   }

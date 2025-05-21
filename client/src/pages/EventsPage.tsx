@@ -19,23 +19,33 @@ import {
 import { cn } from "../lib/utils";
 import { DatePickerWithRange } from "../components/ui/DatePicker";
 import { CreateEventModal } from "../components/modalViews/CreateEventModal";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
+import { Button } from "../components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { FaUser, FaUsers } from "react-icons/fa";
 
 const EventsPage: React.FC = () => {
   const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [displayEvents, setDisplayEvents] = useState([]);
+  const [selectedEvents, setSelectedEvents] = useState("All Events");
   const store = useStore();
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const dayOfWeek = daysOfWeek[date.getUTCDay()];
     const dayOfMonth = String(date.getUTCDate()).padStart(2, "0");
-    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
 
     return `${dayOfWeek} ${dayOfMonth}, ${hours}:${minutes}`;
   };
+
   const fetchEvents = debounce(async () => {
     const orderBy = encodeURIComponent(JSON.stringify({ start: "desc" }));
     try {
@@ -47,13 +57,28 @@ const EventsPage: React.FC = () => {
       console.log(e);
     }
   });
-  const filteredResults = events.filter((item: any) =>
+
+  const filterEvents = (filter: string) => {
+    if (filter === "My Events") {
+      const myEvents = events.filter(
+        (event: any) => event.groupId === store.currentUser.groupId
+      );
+      setDisplayEvents(myEvents);
+    } else {
+      setDisplayEvents(events);
+    }
+  };
+
+  const filteredResults = displayEvents.filter((item: any) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
   console.log(filteredResults);
   useEffect(() => {
     fetchEvents();
   }, [searchTerm]);
+  useEffect(() => {
+    filterEvents(selectedEvents);
+  }, [events, selectedEvents]);
   return (
     <div className="flex flex-col w-full">
       <div className="w-full flex justify-between items-center mb-2">
@@ -70,7 +95,7 @@ const EventsPage: React.FC = () => {
       <div className="flex h-[calc(100vh-180px)] w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
         <div className="flex items-center justify-between p-4 ">
           <Breadcrumbs />
-          <div className="flex w-full gap-4 ">
+          <div className="flex w-full gap-4 items-center ">
             <div className="flex w-full gap-2 justify-end">
               <div className="relative w-1/5">
                 <CiSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -82,6 +107,32 @@ const EventsPage: React.FC = () => {
                 />
               </div>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  {selectedEvents} <ChevronDown className="ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuCheckboxItem
+                  checked={selectedEvents === "My Events"}
+                  onCheckedChange={() => setSelectedEvents("My Events")}
+                  className="cursor-pointer hover:underline flex justify-center gap-2 "
+                >
+                  <FaUser />
+                  My Events
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={selectedEvents === "All Events"}
+                  onCheckedChange={() => setSelectedEvents("All Events")}
+                  className="cursor-pointer hover:underline flex justify-center gap-2 "
+                >
+                  <FaUsers />
+                  All Events
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {store.currentUser.roles.includes("Admin") ||
             store.currentUser.roles.includes("Teacher") ? (
               <CreateEventModal

@@ -1,15 +1,29 @@
+import { NotificationService } from './../notification/notification.service';
 import { PrismaService } from './../prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Prisma } from '@prisma/client';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { title } from 'process';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationService: NotificationService,
+  ) {}
 
   async createMessage(dto: CreateMessageDto) {
+    this.notificationService.create({
+      title: 'New message',
+      isRead: false,
+      userId: dto.userId,
+      created: new Date(),
+      description: dto.content,
+      type: 'Message',
+    });
+
     return this.prisma.message.create({
       data: {
         content: dto.content,
