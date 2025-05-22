@@ -39,7 +39,7 @@ export const KanbanBoard = ({ id, children, className }: KanbanBoardProps) => {
   return (
     <div
       className={cn(
-        "flex h-full min-h-40 flex-col gap-2 rounded-md border bg-secondary p-2 text-xs shadow-sm outline outline-2 transition-all",
+        "flex h-[calc(80vh-230px)] min-h-40 flex-col gap-2 rounded-md border bg-secondary p-2 text-xs shadow-sm outline outline-2 transition-all",
         isOver ? "outline-primary" : "outline-transparent",
         className
       )}
@@ -137,7 +137,10 @@ export const KanbanProvider = ({
 }: KanbanProviderProps) => (
   <DndContext collisionDetection={rectIntersection} onDragEnd={onDragEnd}>
     <div
-      className={cn("grid w-full auto-cols-fr grid-flow-col gap-4", className)}
+      className={cn(
+        "grid w-full auto-cols-fr grid-flow-col gap-4 h-full",
+        className
+      )}
     >
       {children}
     </div>

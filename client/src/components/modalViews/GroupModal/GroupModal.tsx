@@ -167,7 +167,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
   }, [students]);
   return (
     <Dialog>
-      <div className="w-full outline-none">
+      <div className="w-full ">
         <div className="flex justify-between items-start">
           <AlertDialogTitle>
             <div className=" w-full font-k2d text-4xl flex gap-2">
@@ -234,8 +234,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
             <div className="w-full overflow-y-auto h-1/3 flex flex-col gap-2 ">
               {subjects?.length > 0 &&
                 subjects.map((item: any, index: number) => (
-                  <Link
-                    to={`/homepage/subjects/${item.id}`}
+                  <div
                     key={index}
                     className="h-10 flex w-auto justify-between items-center border border-t-2  animate-fadeInOpacity border-b-0 border-l-0 border-r-0 border-emerald-400 rounded-md py-2 px-2  shadow-sm hover:shadow-md cursor-pointer transition-colors duration-200 animation-fill-forwards dark:bg-neutral-800"
                   >
@@ -251,7 +250,9 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                           className="animate-rotate size-5"
                         />
                       )}
-                      {item.name}
+                      <Link to={`/homepage/subjects/${item.id}`}>
+                        {item.name}
+                      </Link>
                       <p className="text-xs px-1  bg-emerald-300 lowercase text-center rounded-full items-center flex">
                         {item.status}
                       </p>
@@ -267,7 +268,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({ group }) => {
                         </button>
                       </div>
                     )}
-                  </Link>
+                  </div>
                 ))}
             </div>
           </TabsContent>

@@ -8,4 +8,5 @@ export type Task = {
   grade: number;
   lessonId: string;
   subjectId: string;
+  status: number;
 };

@@ -28,6 +28,7 @@ export class AuthService {
   async login(userData: LoginDTO, res: Response) {
     const { email, password } = userData;
     const otpCode = this.generateOtpCode();
+    console.log(otpCode);
     const foundUser = await this.prisma.user.findUnique({
       where: { email: email },
     });

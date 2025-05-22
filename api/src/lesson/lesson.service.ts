@@ -131,4 +131,13 @@ export class LessonService {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
+
+  async updateStatusForLesson(lessonId: string, status: number) {
+    return await this.prisma.lesson.update({
+      where: { id: lessonId },
+      data: {
+        status: +status,
+      },
+    });
+  }
 }

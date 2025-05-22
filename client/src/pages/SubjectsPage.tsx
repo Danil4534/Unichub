@@ -43,7 +43,7 @@ const SubjectsPage: React.FC = () => {
     if (filter === "My Subjects") {
       const mySubjects = subjects.filter((subject: Subject) =>
         subject.groups.some(
-          (group: any) => group.id == store.currentUser.groupId
+          (group: any) => group.id == store.currentUser?.groupId
         )
       );
       setDisplaySubject(mySubjects);
@@ -120,7 +120,7 @@ const SubjectsPage: React.FC = () => {
         <div className="grid grid-cols-4 gap-4 overflow-y-auto w-full p-4">
           {filteredResults.length > 0 ? (
             filteredResults.map((item: any, index: number) => (
-              <Link to={`/homepage/subjects/${item.id}`}>
+              <Link to={`/homepage/subjects/${item.id}`} key={index}>
                 <div
                   key={index}
                   style={{ animationDelay: `${index * 200}ms` }}

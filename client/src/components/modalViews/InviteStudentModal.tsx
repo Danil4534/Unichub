@@ -103,7 +103,7 @@ export const InviteStudentModal: React.FC<InviteStudentModalProps> = ({
 
   useEffect(() => {
     handleUsers();
-  }, []);
+  }, [students]);
 
   return (
     <>

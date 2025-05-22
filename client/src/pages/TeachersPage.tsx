@@ -60,7 +60,7 @@ const TeachersPage: React.FC = () => {
         </div>
         <h1 className="font-k2d text-6xl">All Teachers</h1>
       </div>
-      <div className="flex h-full w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
+      <div className="flex h-[calc(100vh-180px)] w-full flex-col gap-2 p-4 rounded-2xl border border-neutral-200 bg-white  md: dark:border-neutral-700 dark:bg-neutral-900 ">
         <div className="flex items-center justify-between p-4 ">
           <Breadcrumbs />
           <div className="flex w-full gap-2 justify-end">

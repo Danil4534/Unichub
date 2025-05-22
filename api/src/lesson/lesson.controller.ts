@@ -80,7 +80,13 @@ export class LessonController {
   async deleteAllLessonsIntoSubject(@Param('subId') subId: string) {
     return await this.lessonService.removeAllLessonIntoSubject(subId);
   }
-
+  @Put('/updateStatusForLesson/:lessonId/:status')
+  async updateStatusForLesson(
+    @Param('lessonId') lessonId: string,
+    @Param('status') status: number,
+  ) {
+    return await this.lessonService.updateStatusForLesson(lessonId, status);
+  }
   @Delete(':id')
   remove(@Param('id') id: string): Promise<string> {
     return this.lessonService.removeLesson(id);

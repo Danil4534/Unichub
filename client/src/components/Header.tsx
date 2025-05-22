@@ -3,7 +3,7 @@ import { IoCloudyNightOutline, IoNotificationsOutline } from "react-icons/io5";
 import { useStore } from "../store/store";
 import { Image } from "./ui/Image";
 import { NavLink } from "react-router-dom";
-import SearchInput from "./SearchInput";
+
 import { useEffect, useRef } from "react";
 import { Switch } from "./ui/switch";
 import { ChatSheet } from "./ChatSheet";
@@ -11,9 +11,8 @@ import { io, Socket } from "socket.io-client";
 
 const Header: React.FC = () => {
   const store = useStore();
-
   const socketRef = useRef<Socket | null>(null);
-
+  console.log(store.currentUser);
   useEffect(() => {
     socketRef.current?.disconnect();
     const socket = io("http://localhost:3000");
@@ -23,8 +22,6 @@ const Header: React.FC = () => {
     socket.on("notifications", (data) => {
       console.log(data);
     });
-
-    store.setCurrentUser();
   }, []);
   return (
     <header className="w-full h-24 bg-white px-10 py-1 flex justify-between items-center animate-topIn  border-none dark:bg-neutral-900 border-b-2 border-neutral-500">
@@ -34,9 +31,6 @@ const Header: React.FC = () => {
             Welcome back,{store.currentUser?.name}
           </h1>
           <p className="text-neutral-400 font-k2d">Welcome back to Unichub</p>
-        </div>
-        <div>
-          <SearchInput className=" dark:text-white dark:placeholder:text-white" />
         </div>
       </div>
       <div className="flex flex-row gap-5 items-center">

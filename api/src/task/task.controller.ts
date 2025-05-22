@@ -21,20 +21,10 @@ import { ApiBody } from '@nestjs/swagger';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Post(':subId/:groupIds')
+  @Post()
   @ApiBody({ type: CreateTaskDto })
-  async create(
-    @Body() createTaskDto: Prisma.TaskCreateInput,
-    @Param('subId') subId: string,
-    @Param('groupIds') groupIds: string,
-  ): Promise<Task> {
-    const groupIdsArray = groupIds.split(',');
-
-    return await this.taskService.createTask(
-      subId,
-      createTaskDto,
-      groupIdsArray,
-    );
+  async create(@Body() createTaskDto: Prisma.TaskCreateInput): Promise<Task> {
+    return await this.taskService.createTask(createTaskDto);
   }
 
   @Get()
@@ -73,6 +63,14 @@ export class TaskController {
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.taskService.updateTask(id, updateTaskDto);
+  }
+
+  @Put('/updateStatusForTask/:taskId/:status')
+  async updateStatusForTask(
+    @Param('taskId') taskId: string,
+    @Param('status') status: number,
+  ) {
+    return await this.taskService.updateStatusForTask(taskId, status);
   }
 
   @Delete(':id')

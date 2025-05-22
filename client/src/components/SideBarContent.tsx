@@ -1,29 +1,37 @@
 import { Image } from "./ui/Image";
 import { SidebarLink } from "./ui/SideBar";
-import HomeIcon from "../assets/icons/icon _Home_.svg";
-import TeacherIcon from "../assets/icons/icon _teacher_.svg";
-import UsersIcon from "../assets/icons/icon _Users_.svg";
-import BooksIcon from "../assets/icons/ImBooks.svg";
+import TeacherIconLight from "../assets/icons/teacherIconLight_.svg";
+import TeacherIconDark from "../assets/icons/icon _teacher_.svg";
+
 import LogoIconBlack from "../assets/icons/LogoIconBlack.svg";
 import MessageIcon from "../assets/icons/Message.svg";
 import EventsIcon from "../assets/icons/Events.svg";
 import { Logo, LogoIcon } from "./Logo";
-
+import { GrHomeRounded } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStore } from "../store/store";
 import { CiLogout } from "react-icons/ci";
-
+import { FaUsers } from "react-icons/fa";
+import { ImBooks } from "react-icons/im";
+import { AiOutlineMessage } from "react-icons/ai";
+import { MdCalendarToday } from "react-icons/md";
 type SideBarContentProps = {
   open: boolean;
 };
 
 export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
+  const store = useStore();
   const links = [
     {
       label: "Home",
       href: "/homepage",
-      icon: <Image src={HomeIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <GrHomeRounded className="w-4 text-white " />
+        ) : (
+          <GrHomeRounded className="w-4" />
+        ),
     },
     {
       label: "Groups",
@@ -33,27 +41,53 @@ export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
     {
       label: "Teachers",
       href: "teachers",
-      icon: <Image src={TeacherIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <Image src={TeacherIconLight} className="w-4" />
+        ) : (
+          <Image src={TeacherIconDark} className="w-4" />
+        ),
     },
+
     {
       label: "Students",
       href: "students",
-      icon: <Image src={UsersIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <FaUsers className="w-4 text-neutral-400 " />
+        ) : (
+          <FaUsers className="w-4" />
+        ),
     },
     {
       label: "Subjects",
       href: "subjects",
-      icon: <Image src={BooksIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <ImBooks className="w-4 text-neutral-400 " />
+        ) : (
+          <ImBooks className="w-4" />
+        ),
     },
     {
       label: "Events",
       href: "events",
-      icon: <Image src={EventsIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <MdCalendarToday className="w-4 text-neutral-400 " />
+        ) : (
+          <MdCalendarToday className="w-4" />
+        ),
     },
     {
       label: "Chats",
       href: "chats",
-      icon: <Image src={MessageIcon} className="w-4" />,
+      icon:
+        store.theme === "dark" ? (
+          <AiOutlineMessage className="w-4 text-neutral-400 " />
+        ) : (
+          <AiOutlineMessage className="w-4" />
+        ),
     },
     {
       label: "Logout",
@@ -62,7 +96,7 @@ export const SideBarContent: React.FC<SideBarContentProps> = ({ open }) => {
       action: () => LogoutUser(),
     },
   ];
-  const store = useStore();
+
   const navigate = useNavigate();
   const LogoutUser = async () => {
     try {

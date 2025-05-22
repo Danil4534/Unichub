@@ -35,6 +35,7 @@ const EventsPage: React.FC = () => {
   const [displayEvents, setDisplayEvents] = useState([]);
   const [selectedEvents, setSelectedEvents] = useState("All Events");
   const store = useStore();
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -42,7 +43,6 @@ const EventsPage: React.FC = () => {
     const dayOfMonth = String(date.getUTCDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-
     return `${dayOfWeek} ${dayOfMonth}, ${hours}:${minutes}`;
   };
 
@@ -189,7 +189,7 @@ const EventsPage: React.FC = () => {
                             {item.status}
                           </div>
                         )}
-                        <div className="w-auto">{item.Group.name}</div>
+                        <div className="w-auto">{item.group.name}</div>
                         {formatDate(item.created)}
                       </AccordionTrigger>
                       <AccordionContent className="flex flex-col">

@@ -1,4 +1,5 @@
 export type Lesson = {
+  id: string;
   title: string;
   description: string;
   startTime: string;
@@ -6,4 +7,5 @@ export type Lesson = {
   linkForMeeting: string;
   created: string;
   subjectId: string;
+  status: number;
 };

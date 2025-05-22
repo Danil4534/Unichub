@@ -7,32 +7,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TaskService {
   constructor(private prisma: PrismaService) {}
 
-  async createTask(
-    subId: string,
-    createTaskDto: Prisma.TaskCreateInput,
-    groupIds: string[],
-  ) {
+  async createTask(createTaskDto: Prisma.TaskCreateInput) {
     try {
       const newTask = await this.prisma.task.create({
         data: {
           ...createTaskDto,
-          Subject: {
-            connect: { id: subId },
-          },
+          status: 0,
         },
       });
-
-      if (groupIds && groupIds.length > 0) {
-        for (const groupId of groupIds) {
-          await this.prisma.taskGroup.create({
-            data: {
-              taskId: newTask.id,
-              groupId: groupId,
-            },
-          });
-        }
-      }
-
       return newTask;
     } catch (e) {
       console.log(e);
@@ -41,6 +23,15 @@ export class TaskService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async updateStatusForTask(taskId: string, status: number) {
+    return await this.prisma.task.update({
+      where: { id: taskId },
+      data: {
+        status: +status,
+      },
+    });
   }
 
   async findAllTasks(params: {

@@ -65,31 +65,6 @@ export class EventService {
           created: new Date(),
         },
       });
-
-      const groupId = createEventDto.group?.connect.id;
-      const groupWithUsers = await this.prisma.group.findUnique({
-        where: { id: groupId },
-        include: { students: true },
-      });
-
-      console.log(groupId);
-      console.log(groupWithUsers);
-      if (!groupWithUsers) {
-        throw new Error('Group not found');
-      }
-
-      await Promise.all(
-        groupWithUsers.students.map((user) =>
-          this.notificationService.create({
-            title: 'New event',
-            isRead: false,
-            created: new Date(),
-            description: createEventDto.title,
-            type: 'Event',
-            userId: user.id,
-          }),
-        ),
-      );
       return newEvent;
     } catch (e) {
       console.log(e);

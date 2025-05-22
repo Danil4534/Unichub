@@ -7,13 +7,11 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import * as Yup from "yup";
 import axios from "axios";
 import { Button } from "../ui/button";
-// import { Select } from "../ui/Select";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { Group } from "../../shared/types/Group";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { EventDatePicker } from "../ui/eventDatePicker";
 
 export type CreateEventModalProps = {
   trigger?: React.ReactNode;
@@ -106,14 +104,12 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               <Label htmlFor="start" className="dark:text-white">
                 Start date
               </Label>
-              <EventDatePicker name="start" value={""} />
             </div>
 
             <div>
               <Label htmlFor="end" className="dark:text-white">
                 End date
               </Label>
-              <EventDatePicker name="end" value={"values.end"} />
             </div>
 
             <LabelInputContainer className="mb-2">

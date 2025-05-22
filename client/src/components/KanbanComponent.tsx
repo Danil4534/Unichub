@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { endOfMonth, startOfMonth, subDays, subMonths } from "date-fns";
+import { useEffect, useState } from "react";
 import {
   DragEndEvent,
   KanbanBoard,
@@ -9,160 +8,173 @@ import {
   KanbanProvider,
 } from "./ui/shadcn-io/kanban";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { toast } from "sonner";
+import { Task } from "../shared/types/Task";
+import { Lesson } from "../shared/types/Lesson";
+import axios from "axios";
+import { useStore } from "../store/store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { RiUnpinLine } from "react-icons/ri";
+import { LiaTrashAltSolid } from "react-icons/lia";
+import { FaRegEdit } from "react-icons/fa";
 
-// Inline content
-const today = new Date();
+interface Feature {
+  id: string;
+  type: "task" | "lesson" | "test";
+  name: string;
+  startAt: Date;
+  endAt: Date;
+  status: { id: string; name: string; color: string };
+  group: { id: string; name: string };
+  product: { id: string; name: string };
+  owner: { id: string; image: string; name: string };
+  initiative: { id: string; name: string };
+  release: { id: string; name: string };
+}
+
+const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayOfWeek = daysOfWeek[date.getUTCDay()];
+  const dayOfMonth = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  return `${dayOfWeek} ${dayOfMonth}, ${hours}:${minutes}`;
+};
 
 const exampleStatuses = [
   { id: "1", name: "Planned", color: "#6B7280" },
-  { id: "2", name: "In Progress", color: "#F59E0B" },
-  { id: "3", name: "Done", color: "#10B981" },
+  { id: "2", name: "New", color: "#00ff00" },
+  { id: "3", name: "Past", color: "#ff0000" },
+  { id: "4", name: "Done", color: "#10B981" },
 ];
 
-const initialFeatures = [
-  {
-    id: "1",
-    name: "AI Scene Analysis",
-    startAt: startOfMonth(subMonths(today, 6)),
-    endAt: subDays(endOfMonth(today), 5),
-    status: exampleStatuses[0],
-    group: { id: "1", name: "Core AI Features" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "1",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=1",
-      name: "Alice Johnson",
-    },
-    initiative: { id: "1", name: "AI Integration" },
-    release: { id: "1", name: "v1.0" },
-  },
-  {
-    id: "2",
-    name: "Collaborative Editing",
-    startAt: startOfMonth(subMonths(today, 5)),
-    endAt: subDays(endOfMonth(today), 5),
-    status: exampleStatuses[1],
-    group: { id: "2", name: "Collaboration Tools" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "2",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=2",
-      name: "Bob Smith",
-    },
-    initiative: { id: "2", name: "Real-time Collaboration" },
-    release: { id: "1", name: "v1.0" },
-  },
-  {
-    id: "3",
-    name: "AI-Powered Color Grading",
-    startAt: startOfMonth(subMonths(today, 4)),
-    endAt: subDays(endOfMonth(today), 5),
-    status: exampleStatuses[2],
-    group: { id: "1", name: "Core AI Features" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "3",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=3",
-      name: "Charlie Brown",
-    },
-    initiative: { id: "1", name: "AI Integration" },
-    release: { id: "2", name: "v1.1" },
-  },
-  {
-    id: "4",
-    name: "Real-time Video Chat",
-    startAt: startOfMonth(subMonths(today, 3)),
-    endAt: subDays(endOfMonth(today), 12),
-    status: exampleStatuses[0],
-    group: { id: "2", name: "Collaboration Tools" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "4",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=4",
-      name: "Diana Prince",
-    },
-    initiative: { id: "2", name: "Real-time Collaboration" },
-    release: { id: "2", name: "v1.1" },
-  },
-  {
-    id: "5",
-    name: "AI Voice-to-Text Subtitles",
-    startAt: startOfMonth(subMonths(today, 2)),
-    endAt: subDays(endOfMonth(today), 5),
-    status: exampleStatuses[1],
-    group: { id: "1", name: "Core AI Features" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "5",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=5",
-      name: "Ethan Hunt",
-    },
-    initiative: { id: "1", name: "AI Integration" },
-    release: { id: "2", name: "v1.1" },
-  },
-  {
-    id: "6",
-    name: "Cloud Asset Management",
-    startAt: startOfMonth(subMonths(today, 1)),
-    endAt: endOfMonth(today),
-    status: exampleStatuses[2],
-    group: { id: "3", name: "Cloud Infrastructure" },
-    product: { id: "1", name: "Video Editor Pro" },
-    owner: {
-      id: "6",
-      image: "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=6",
-      name: "Fiona Gallagher",
-    },
-    initiative: { id: "3", name: "Cloud Migration" },
-    release: { id: "3", name: "v1.2" },
-  },
-];
+const KanbanComponent = ({
+  defaultTasks = [],
+  lessons = [],
+}: {
+  defaultTasks?: Task[];
+  lessons?: Lesson[];
+}) => {
+  const store = useStore();
+  const [features, setFeatures] = useState<Feature[]>([]);
 
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
-
-const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-});
-
-const KanbanComponent = () => {
-  const [features, setFeatures] = useState(initialFeatures);
-
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
+    if (!over) return;
 
-    if (!over) {
-      return;
-    }
+    const status = exampleStatuses.find((s) => s.name === over.id);
+    if (!status) return;
 
-    const status = exampleStatuses.find((status) => status.name === over.id);
+    const feature = features.find((f) => f.id === active.id);
+    if (!feature) return;
 
-    if (!status) {
-      return;
-    }
-
-    setFeatures(
-      features.map((feature) => {
-        if (feature.id === active.id) {
-          return { ...feature, status };
-        }
-
-        return feature;
-      })
+    const newStatusIndex = exampleStatuses.findIndex(
+      (s) => s.name === status.name
     );
+    if (newStatusIndex === -1) return;
+
+    try {
+      if (feature.type === "task") {
+        await axios.put(
+          `http://localhost:3000/task/updateStatusForTask/${feature.id}/${newStatusIndex}`
+        );
+      } else if (feature.type === "lesson") {
+        await axios.put(
+          `http://localhost:3000/lesson/updateStatusForLesson/${feature.id}/${newStatusIndex}`
+        );
+      }
+
+      setFeatures((prev) =>
+        prev.map((f) => (f.id === feature.id ? { ...f, status } : f))
+      );
+      toast.success("Status was changed");
+    } catch (err) {
+      console.error("Error with update", err);
+      toast.error("Error with update");
+    }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadFeatures = async () => {
+      try {
+        const tasks = defaultTasks.map((item, index) => ({
+          id: item.id,
+          type: "task" as const,
+          name: item.title,
+          startAt: new Date(item.startTime),
+          endAt: new Date(item.endTime),
+          status: exampleStatuses[item.status],
+          group: { id: "1", name: "Default Group" },
+          product: { id: "1", name: "Default Product" },
+          owner: {
+            id: String(index),
+            image: `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${index}`,
+            name: `User ${index + 1}`,
+          },
+          initiative: { id: "1", name: item.title },
+          release: { id: "1", name: "v1.0" },
+        }));
+
+        const lessonsData = lessons.map((item, index) => ({
+          id: item.id,
+          type: "lesson" as const,
+          name: item.title,
+          startAt: new Date(item.startTime),
+          endAt: new Date(item.endTime),
+          status: exampleStatuses[item.status],
+          group: { id: "1", name: "Default Group" },
+          product: { id: "1", name: "Default Product" },
+          owner: {
+            id: String(index + tasks.length),
+            image: `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${
+              index + tasks.length
+            }`,
+            name: `User ${index + tasks.length + 1}`,
+          },
+          initiative: { id: "1", name: item.title },
+          release: { id: "1", name: "v1.0" },
+        }));
+
+        if (isMounted) {
+          setFeatures([...tasks, ...lessonsData]);
+        }
+      } catch (e: any) {
+        console.error(e);
+        toast.error(e.message || "Ошибка загрузки");
+      }
+    };
+
+    loadFeatures();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [JSON.stringify(defaultTasks), JSON.stringify(lessons)]);
+  const visibleStatuses = exampleStatuses.filter((status) => {
+    if (status.name === "Planned") {
+      return (
+        store.currentUser.roles.includes("Teacher") ||
+        store.currentUser.roles.includes("Admin")
+      );
+    }
+    return true;
+  });
   return (
-    <KanbanProvider onDragEnd={handleDragEnd} className="p-4 ">
-      {exampleStatuses.map((status) => (
+    <KanbanProvider onDragEnd={handleDragEnd} className="p-4">
+      {visibleStatuses.map((status) => (
         <KanbanBoard key={status.name} id={status.name}>
           <KanbanHeader name={status.name} color={status.color} />
           <KanbanCards>
-            <div className="h-[calc(100%-20px)] overflow-y-scroll overflow-x-hidden">
+            <div className="h-full">
               {features
                 .filter((feature) => feature.status.name === status.name)
                 .map((feature, index) => (
@@ -172,29 +184,38 @@ const KanbanComponent = () => {
                     name={feature.name}
                     parent={status.name}
                     index={index}
+                    className="relative"
                   >
+                    <div className="absolute top-2 right-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <HiOutlineDotsHorizontal />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <FaRegEdit className="text-neutral-500" />{" "}
+                            <span>Edit</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <LiaTrashAltSolid />
+                            <span>Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex flex-col gap-1">
                         <p className="m-0 flex-1 font-medium text-sm">
                           {feature.name}
                         </p>
                         <p className="m-0 text-muted-foreground text-xs">
-                          {feature.initiative.name}
+                          start {formatDate(feature.startAt.toDateString())}
+                        </p>
+                        <p className="m-0 text-muted-foreground text-xs">
+                          end {formatDate(feature.endAt.toDateString())}
                         </p>
                       </div>
-                      {feature.owner && (
-                        <Avatar className="h-4 w-4 shrink-0">
-                          <AvatarImage src={feature.owner.image} />
-                          <AvatarFallback>
-                            {feature.owner.name?.slice(0, 2)}
-                          </AvatarFallback>
-                        </Avatar>
-                      )}
                     </div>
-                    <p className="m-0 text-muted-foreground text-xs">
-                      {shortDateFormatter.format(feature.startAt)} -{" "}
-                      {dateFormatter.format(feature.endAt)}
-                    </p>
                   </KanbanCard>
                 ))}
             </div>

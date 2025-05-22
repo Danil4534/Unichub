@@ -14,7 +14,6 @@ function App() {
     } else {
       root.classList.remove("dark");
     }
-    store.setCurrentUser();
   }, [store.theme]);
   return (
     <>

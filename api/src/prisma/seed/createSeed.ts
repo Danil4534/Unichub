@@ -133,6 +133,11 @@ async function seedSubjects(groups: any[]) {
 
 async function seedTasks(subjects: any[]) {
   console.log('📝 Seeding tasks...');
+
+  const now = new Date();
+  const oneWeekLater = new Date();
+  oneWeekLater.setDate(now.getDate() + 7);
+
   return Promise.all(
     subjects.flatMap((subject) => [
       prisma.task.create({
@@ -140,7 +145,10 @@ async function seedTasks(subjects: any[]) {
           title: `Test for ${subject.name}`,
           description: 'Test description',
           type: TypeTask.Test,
+          status: 0,
           grade: 100,
+          startTime: now,
+          endTime: oneWeekLater,
           subjectId: subject.id,
         },
       }),
@@ -150,12 +158,16 @@ async function seedTasks(subjects: any[]) {
           description: 'Default description',
           type: TypeTask.Default,
           grade: 100,
+          status: 0,
+          startTime: now,
+          endTime: oneWeekLater,
           subjectId: subject.id,
         },
       }),
     ]),
   );
 }
+
 async function seedLessons(subjects: any[]) {
   console.log('📚 Seeding lessons...');
 
@@ -189,6 +201,7 @@ async function seedLessons(subjects: any[]) {
           description: `Auto-generated lesson for ${subject.name}`,
           startTime,
           endTime,
+          status: 0,
           linkForMeeting: `https://meet.example.com/${subject.id.slice(0, 8)}-${i}`,
           created: new Date(),
           subjectId: subject.id,
