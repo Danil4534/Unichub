@@ -56,7 +56,7 @@ const MessageList: React.FC<MessageListProps> = ({
         <>
           <div className="w-full p-2 light:bg-white">
             <div className="flex w-full">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 ">
                 {getChatPartner(currentChat, store.currentUser.id).img ? (
                   <>
                     <Image
@@ -76,9 +76,13 @@ const MessageList: React.FC<MessageListProps> = ({
                     </div>
                   </>
                 )}
-                {getChatPartner(currentChat, store.currentUser.id).name}{" "}
-                {getChatPartner(currentChat, store.currentUser.id).info}{" "}
-                {getChatPartner(currentChat, store.currentUser.id).surname}
+                <div>
+                  <div>
+                    {getChatPartner(currentChat, store.currentUser.id).name}{" "}
+                    {getChatPartner(currentChat, store.currentUser.id).surname}
+                  </div>
+                  {getChatPartner(currentChat, store.currentUser.id).info}{" "}
+                </div>
               </div>
             </div>
           </div>

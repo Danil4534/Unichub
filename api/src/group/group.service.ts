@@ -13,12 +13,7 @@ export class GroupService {
       const existGroup = await this.prisma.group.findFirst({
         where: { name: createGroupDto.name },
       });
-      if (existGroup) {
-        throw new HttpException(
-          'The group with this name already exists',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+
       const newGroup = await this.prisma.group.create({
         data: createGroupDto,
       });

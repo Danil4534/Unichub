@@ -13,6 +13,7 @@ async function clearDatabase() {
   await prisma.subject.deleteMany();
   await prisma.user.deleteMany();
   await prisma.group.deleteMany();
+  await prisma.lesson.deleteMany();
 }
 
 async function seedGroups() {
@@ -181,7 +182,7 @@ async function seedLessons(subjects: any[]) {
   ];
 
   const lessons = subjects.flatMap((subject) =>
-    Array.from({ length: getRandomInt(3, 6) }).map((_, i) => {
+    Array.from({ length: getRandomInt(3, 10) }).map((_, i) => {
       const baseDate = new Date();
       baseDate.setDate(baseDate.getDate() + i);
 

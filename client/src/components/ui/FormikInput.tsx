@@ -7,6 +7,7 @@ interface FormikInputProps {
   placeholder?: string;
   className?: string;
   children?: React.ReactNode;
+  id?: string;
 }
 
 export const FormikInput: React.FC<FormikInputProps> = ({

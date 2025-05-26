@@ -13,6 +13,7 @@ import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import TeacherIcon from "../assets/icons/icon _teacher_Light.svg";
 import { cn } from "../lib/utils";
 import { toast } from "sonner";
+import { BsTelegram } from "react-icons/bs";
 const TeachersPage: React.FC = () => {
   const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -85,7 +86,7 @@ const TeachersPage: React.FC = () => {
             <h1 className="font-k2d">Empty</h1>
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-4 overflow-y-auto h-2/3 w-full p-4">
+          <div className="grid grid-cols-4 gap-4 overflow-y-auto h-4/5 w-full p-4">
             {filteredResults.length > 0 &&
               filteredResults.map((item: any, index: number) => (
                 <div
@@ -146,8 +147,11 @@ const TeachersPage: React.FC = () => {
                               {item}
                             </span>
                           ))}
-                        </div>
-
+                        </div>{" "}
+                        <span className="flex items-center gap-2 mt-2">
+                          <BsTelegram />
+                          @Telegram
+                        </span>
                         <button
                           onClick={() =>
                             handleCreateNewChat(store.currentUser.id, item.id)

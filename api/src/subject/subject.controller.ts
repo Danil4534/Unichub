@@ -12,17 +12,13 @@ import {
   Put,
 } from '@nestjs/common';
 import { SubjectService } from './subject.service';
-import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { Prisma, Subject } from '@prisma/client';
-import { ApiBody } from '@nestjs/swagger';
-import { CreateSubjectDto } from './dto/create-subject.dto';
 
 @Controller('subject')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
   @Post()
-  @ApiBody({ type: CreateSubjectDto })
   async createSubject(
     @Body() createSubjectDto: Prisma.SubjectCreateInput,
   ): Promise<Subject> {

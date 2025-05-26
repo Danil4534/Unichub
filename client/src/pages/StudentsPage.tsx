@@ -13,7 +13,7 @@ import StudentIcon from "../assets/icons/icon _Users_Light.svg";
 import LogoIconLight from "../assets/icons/LogoIconLight.svg";
 import { toast } from "sonner";
 import { Link } from "react-router";
-
+import { BsTelegram } from "react-icons/bs";
 const StudentsPage: React.FC = () => {
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -154,6 +154,11 @@ const StudentsPage: React.FC = () => {
                             </span>
                           ))}
                         </div>
+
+                        <span className="flex items-center gap-2 mt-2">
+                          <BsTelegram />
+                          @Telegram
+                        </span>
 
                         <Link
                           to={`/homepage/chats/${item.id}`}

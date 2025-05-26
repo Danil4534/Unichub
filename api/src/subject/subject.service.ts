@@ -1,9 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateSubjectDto } from './dto/create-subject.dto';
-import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, Subject } from '@prisma/client';
-import { connect } from 'http2';
+
 @Injectable()
 export class SubjectService {
   constructor(private prisma: PrismaService) {}

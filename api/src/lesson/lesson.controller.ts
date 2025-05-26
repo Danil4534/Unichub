@@ -14,11 +14,8 @@ import {
 } from '@nestjs/common';
 import { LessonService } from './lesson.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
-import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Lesson, Prisma } from '@prisma/client';
 import { ApiBody } from '@nestjs/swagger';
-import { RoleDecorator } from 'src/auth/guard/role.decorator';
-import { RoleGuard } from 'src/auth/guard/RoleGuard';
 
 @Controller('lesson')
 export class LessonController {
@@ -71,7 +68,7 @@ export class LessonController {
   @Put(':id')
   async updateLesson(
     @Param('id') id: string,
-    @Body() updateLessonDto: UpdateLessonDto,
+    @Body() updateLessonDto: Prisma.UserUpdateInput,
   ) {
     return this.lessonService.updateLesson(id, updateLessonDto);
   }

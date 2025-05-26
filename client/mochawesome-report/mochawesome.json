@@ -1,0 +1,195 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-05-25T18:42:28.509Z",
+    "end": "2025-05-25T18:42:43.958Z",
+    "duration": 15449,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1e6ebebc-881b-4015-9123-a24d071120bd",
+      "title": "",
+      "fullFile": "C:\\Users\\danya\\OneDrive\\Рабочий стол\\React\\client\\src\\test\\script.spec.cjs",
+      "file": "\\src\\test\\script.spec.cjs",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+          "title": "Tests",
+          "fullFile": "C:\\Users\\danya\\OneDrive\\Рабочий стол\\React\\client\\src\\test\\script.spec.cjs",
+          "file": "\\src\\test\\script.spec.cjs",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Tests\"",
+              "fullTitle": "Tests \"before all\" hook in \"Tests\"",
+              "timedOut": false,
+              "duration": 752,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "driver = await new Builder().forBrowser(\"chrome\").build();",
+              "err": {},
+              "uuid": "6bac0a9a-1c24-4d92-ade4-a166a33f2bd5",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Register",
+              "fullTitle": "Tests Register",
+              "timedOut": false,
+              "duration": 7823,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await driver.get(\"http://localhost:5173/\");\nlet linkForRegister = await driver.findElement(By.id(\"registerLink\"));\nawait linkForRegister.click();\nlet firstNameInput = await driver.findElement(By.id(\"firstName\"));\nawait firstNameInput.sendKeys(\"admin\");\nlet SurNameInput = await driver.findElement(By.id(\"surName\"));\nawait SurNameInput.sendKeys(\"admin\");\nlet phoneInput = await driver.findElement(By.id(\"phone\"));\nawait phoneInput.sendKeys(\"admin\");\nlet emailInput = await driver.findElement(By.css(`input[type=\"email\"]`));\nawait emailInput.sendKeys(\"admin@gmail.com\");\nlet passwordInput = await driver.findElement(By.css(`input[type=\"password\"]`));\nawait passwordInput.sendKeys(\"adminadmin\");\nlet sexSelect = await driver.findElement(By.name(\"sex\"));\nawait sexSelect.click();\nlet option = await sexSelect.findElement(By.xpath(`//option[contains(text(), '👦 Male')]`));\nawait option.click();\nlet submitButton = await driver.findElement(By.id('submit'));\nawait submitButton.click();",
+              "err": {},
+              "uuid": "5a7c1c39-d015-4e69-96f4-ecd0d2606bd2",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Get logo text by id",
+              "fullTitle": "Tests Get logo text by id",
+              "timedOut": false,
+              "duration": 3193,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await driver.get(\"http://localhost:5173/\");\nlet elementById = await driver.findElement(By.id(\"Logo\"));\nconst text = await elementById.getText()\nassert.strictEqual(text, \"Sign in\");",
+              "err": {},
+              "uuid": "bc0be0ae-c667-4791-840f-bdcb9c54fa97",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Get Input for email",
+              "fullTitle": "Tests Get Input for email",
+              "timedOut": false,
+              "duration": 1173,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await driver.get(\"http://localhost:5173/\");\nlet elementByTag = await driver.findElement(By.tagName(\"input\"));\nlet tagName = await elementByTag.getTagName(); \nassert.strictEqual(tagName, \"input\");",
+              "err": {},
+              "uuid": "378744fa-4cbf-4a0b-9611-afb665da3a15",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Get Input for password",
+              "fullTitle": "Tests Get Input for password",
+              "timedOut": false,
+              "duration": 1134,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await driver.get(\"http://localhost:5173/\");\nlet elementByTag = await driver.findElement(By.css(`input[type=\"password\"]`));\nlet tagName = await elementByTag.getTagName()\nassert.strictEqual(tagName, \"input\");",
+              "err": {},
+              "uuid": "18749ee8-e193-497a-96a8-574948dbef4d",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Authentication",
+              "fullTitle": "Tests Authentication",
+              "timedOut": false,
+              "duration": 1365,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await driver.get(\"http://localhost:5173/\");\nlet emailInput = await driver.findElement(By.css(`input[type=\"email\"]`));\nawait emailInput.sendKeys(\"admin@gmail.com\")\nlet passwordInput = await driver.findElement(By.css(`input[type=\"password\"]`))\nawait passwordInput.sendKeys(\"adminadmin\")\nlet submitButton = await driver.findElement(By.id('submit'))\nawait submitButton.click();",
+              "err": {},
+              "uuid": "1f59cd8d-6136-4a1f-bb63-c1b638740486",
+              "parentUUID": "3cdee213-920d-4c16-9acf-c0fe018c80aa",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "5a7c1c39-d015-4e69-96f4-ecd0d2606bd2",
+            "bc0be0ae-c667-4791-840f-bdcb9c54fa97",
+            "378744fa-4cbf-4a0b-9611-afb665da3a15",
+            "18749ee8-e193-497a-96a8-574948dbef4d",
+            "1f59cd8d-6136-4a1f-bb63-c1b638740486"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 14688,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 20000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.5.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}

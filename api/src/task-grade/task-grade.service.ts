@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskGradeDto } from './dto/create-task-grade.dto';
-import { UpdateGradeDto } from './dto/update-task-grade.dto';
+
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TaskGradeService {
@@ -25,7 +26,7 @@ export class TaskGradeService {
     });
   }
 
-  async updateGrade(id: string, dto: UpdateGradeDto) {
+  async updateGrade(id: string, dto: Prisma.TaskGradeUpdateInput) {
     const grade = await this.prisma.taskGrade.findUnique({
       where: { id },
     });

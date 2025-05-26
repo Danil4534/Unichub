@@ -130,7 +130,10 @@ const LoginForm: React.FC = () => {
       <p className=" max-w-sm text-sm text-neutral-400 dark:text-neutral-400">
         university platform
       </p>
-      <h1 className="font-k2d text-3xl mt-6 flex items-end dark:text-black">
+      <h1
+        id={"Logo"}
+        className="font-k2d text-3xl mt-6 flex items-end dark:text-black"
+      >
         <Image src={LogoIconBlack} className={"mr-2 animate-rotate "} />
         {store.activeLogin
           ? "Sign in"
@@ -191,13 +194,16 @@ const LoginForm: React.FC = () => {
               <Button
                 content={"Sign in"}
                 type="submit"
+                id="submit"
                 className=" w-[382px] mt-4 font-k2d text-xl"
                 // action={() => toast("📩 Check your Email")}
               />
               <p className="font-medium">
                 Don`t have an account?
                 <span className="font-normal mx-1">
-                  <Link to="/register">Sign up</Link>
+                  <Link to="/register" id="registerLink">
+                    Sign up
+                  </Link>
                 </span>
               </p>
             </div>

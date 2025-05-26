@@ -1,10 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateLessonDto } from './dto/create-lesson.dto';
-import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Lesson, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EventService } from 'src/event/event.service';
-import { CreateEventDto } from 'src/event/dto/create-event.dto';
 
 @Injectable()
 export class LessonService {
@@ -80,7 +77,6 @@ export class LessonService {
       await Promise.all(eventPromises);
       return newLesson;
     } catch (e) {
-      console.error('Error creating lesson or events:', e);
       throw new HttpException(
         'Failed to create lesson and associated events',
         HttpStatus.INTERNAL_SERVER_ERROR,

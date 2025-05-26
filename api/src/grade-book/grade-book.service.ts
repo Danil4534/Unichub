@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import * as ExcelJS from 'exceljs';
 import { join } from 'path';
 import { Response } from 'express';
@@ -494,7 +493,7 @@ export class GradeBookService {
       120, // ID
       130, // Name Surname
       100, // Group
-      ...subjectNames.map(() => 60), // Subject grades
+      ...subjectNames.map(() => 60),
       70, // Average
     ];
 
@@ -506,7 +505,6 @@ export class GradeBookService {
       'Average',
     ];
 
-    // Prepare student rows
     const studentRows: string[][] = [];
 
     for (const student of group.students.filter(
@@ -545,7 +543,6 @@ export class GradeBookService {
       ]);
     }
 
-    // Sort descending by average
     studentRows.sort((a, b) => {
       const aAvg = a[a.length - 1];
       const bAvg = b[b.length - 1];
@@ -564,7 +561,6 @@ export class GradeBookService {
         let bgColor = isHeader ? '#dddddd' : '#ffffff';
 
         if (!isHeader) {
-          // Grade coloring
           if (i >= 3 && i < 3 + subjectNames.length && text !== 'N/A') {
             const grade = parseFloat(text);
             fillColor = grade < 60 ? 'red' : 'green';
@@ -592,7 +588,6 @@ export class GradeBookService {
       }
     };
 
-    // Drawing all rows
     let y = tableTop;
     drawRow(headers, y, true);
     y += rowHeight;

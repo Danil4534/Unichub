@@ -36,6 +36,4 @@ export class CreateTaskDto {
     format: 'date-time',
   })
   endTime: Date | string;
-
-  s;
 }

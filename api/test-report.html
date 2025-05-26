@@ -1,0 +1,277 @@
+<html><head><meta charset="utf-8"/><title>Test Report</title><style type="text/css">:root {
+  --text-primary: #111;
+  --text-secondary: #4f4f4f;
+  --success: #006633;
+  --success-bright: #80ffbf;
+  --danger: #cc071e;
+  --danger-bright: #fbdfe0;
+  --warning: #995c00;
+  --warning-bright: #ffeea8;
+  --panel: #eee;
+  --border: #949494;
+  --disabled: #6b6b6b;
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-primary);
+}
+body {
+  padding: 2rem 1rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+#metadata-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.additional-information-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+/** SUMMARY */
+#summary {
+  color: var(--text-primary);
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 0.5rem;
+  background: var(--panel);
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 1rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: var(--success);
+  border-left: 0.4rem solid var(--success);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: var(--danger);
+  border-left: 0.4rem solid var(--danger);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-pending {
+  color: var(--warning);
+  border-left: 0.4rem solid var(--warning);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-empty {
+  color: var(--disabled);
+  border-left: 0.4rem solid var(--disabled);
+  margin-bottom: 0.15rem;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: var(--success-bright);
+  color: var(--success);
+}
+.test-result.failed {
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.test-result.pending {
+  background-color: var(--warning-bright);
+  color: var(--warning);
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed var(--danger);
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 1rem;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: var(--panel);
+  color: var(--text-secondary);
+  border: 0.15rem solid;
+  border-color: var(--panel);
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  border-color: var(--border);
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 1rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+}
+.suite-info .suite-time.warn {
+  background-color: var(--danger);
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 1rem;
+  transform: rotate(180deg) translateY(0.15rem);
+}
+.suite-container[open] .suite-info:before {
+  transform: rotate(0deg) translateY(0.15rem);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--panel);
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><main class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><section id="metadata-container"><div id="timestamp">Started: 2025-05-25 13:18:33</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (10)</div><div class="summary-passed ">10 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (81)</div><div class="summary-passed ">81 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></section><details id="suite-1" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\task-grade\task-grade.service.spec.ts</div><div class="suite-time warn">17.497s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; assignGrade</div><div class="test-title">should throw an error if grade already exists</div><div class="test-status">passed</div><div class="test-duration">0.062s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; assignGrade</div><div class="test-title">should create a new grade if not existing</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; updateGrade</div><div class="test-title">should throw NotFoundException if grade does not exist</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; updateGrade</div><div class="test-title">should update and return grade if it exists</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; getGradesByUser</div><div class="test-title">should return all grades for a user</div><div class="test-status">passed</div><div class="test-duration">0.011s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeService &gt; getGradesByTask</div><div class="test-title">should return all grades for a task</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div></div></details><details id="suite-2" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\lesson\lesson.controller.spec.ts</div><div class="suite-time">0.737s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController</div><div class="test-title">should be defined</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; create</div><div class="test-title">should create a lesson</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; findAllLessons</div><div class="test-title">should return all lessons</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; findAllLessons</div><div class="test-title">should throw error on invalid query</div><div class="test-status">passed</div><div class="test-duration">0.025s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; findOneLesson</div><div class="test-title">should return one lesson</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; updateLesson</div><div class="test-title">should update the lesson</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; deleteAllLessonsIntoSubject</div><div class="test-title">should delete all lessons into subject</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; updateStatusForLesson</div><div class="test-title">should update status for lesson</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonController &gt; remove</div><div class="test-title">should remove a lesson</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></details><details id="suite-3" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\task-grade\task-grade.controller.spec.ts</div><div class="suite-time warn">18.366s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeController</div><div class="test-title">should be defined</div><div class="test-status">passed</div><div class="test-duration">0.034s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeController &gt; assign</div><div class="test-title">should call service.assignGrade with dto and return result</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeController &gt; getByUser</div><div class="test-title">should call service.getGradesByUser and return grades</div><div class="test-status">passed</div><div class="test-duration">0.01s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">TaskGradeController &gt; getByTask</div><div class="test-title">should call service.getGradesByTask and return grades</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div></div></details><details id="suite-4" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\group\group.controller.spec.ts</div><div class="suite-time warn">18.594s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should be defined</div><div class="test-status">passed</div><div class="test-duration">0.075s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should create a group</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should return all groups with parsed query</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should find one group</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should find users in group</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should update a group</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should invite student</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should uninvite student</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should invite subject for multiple groups</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should uninvite subject for multiple groups</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupController</div><div class="test-title">should remove a group</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div></div></details><details id="suite-5" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\chat\chat.gateway.spec.ts</div><div class="suite-time warn">18.543s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway</div><div class="test-title">should be defined</div><div class="test-status">passed</div><div class="test-duration">0.042s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; handleCreateChat</div><div class="test-title">should create chat and emit updates</div><div class="test-status">passed</div><div class="test-duration">0.012s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; getAllChats</div><div class="test-title">should emit all chats</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; getUserChats</div><div class="test-title">should emit user chats to server</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; sendMessage</div><div class="test-title">should create and emit message</div><div class="test-status">passed</div><div class="test-duration">0.01s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; handleGetMessage</div><div class="test-title">should emit and return messages</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">ChatGateway &gt; handleDeleteChat</div><div class="test-title">should delete chat and return result</div><div class="test-status">passed</div><div class="test-duration">0.007s</div></div></div></div></details><details id="suite-6" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\lesson\lesson.service.spec.ts</div><div class="suite-time">0.447s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; findOneLesson</div><div class="test-title">should return a lesson</div><div class="test-status">passed</div><div class="test-duration">0.009s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; findOneLesson</div><div class="test-title">should throw an error if lesson not found</div><div class="test-status">passed</div><div class="test-duration">0.028s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; parseTypes</div><div class="test-title">should parse query parameters correctly</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; parseTypes</div><div class="test-title">should handle undefined parameters</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; findAllLessons</div><div class="test-title">should return an array of lessons</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; create</div><div class="test-title">should create a lesson and associated events</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; create</div><div class="test-title">should throw an error if creation fails</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; updateLesson</div><div class="test-title">should update a lesson</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; updateLesson</div><div class="test-title">should throw an error if update fails</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; removeLesson</div><div class="test-title">should delete a lesson if it exists</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; removeLesson</div><div class="test-title">should return success message if lesson does not exist</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; removeLesson</div><div class="test-title">should throw an error if deletion fails</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; removeAllLessonIntoSubject</div><div class="test-title">should delete all lessons into subject</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; removeAllLessonIntoSubject</div><div class="test-title">should throw an error if deletion fails</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">LessonService &gt; updateStatusForLesson</div><div class="test-title">should update the status of a lesson</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></details><details id="suite-7" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\group\group.service.spec.ts</div><div class="suite-time">0.435s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; createGroup</div><div class="test-title">should create a new group</div><div class="test-status">passed</div><div class="test-duration">0.009s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; createGroup</div><div class="test-title">should throw exception if group exists</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; findUsersIntoGroup</div><div class="test-title">should return group with students</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; inviteStudent</div><div class="test-title">should invite student to group</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; inviteStudent</div><div class="test-title">should throw if group not found</div><div class="test-status">passed</div><div class="test-duration">0.032s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; inviteStudent</div><div class="test-title">should throw if student not found</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; unInviteStudent</div><div class="test-title">should remove student from group</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; inviteSubjectForGroup</div><div class="test-title">should invite subject for multiple groups</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; unInviteSubjectForGroup</div><div class="test-title">should remove subject from multiple groups</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; findAllGroups</div><div class="test-title">should return list of groups</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; remove</div><div class="test-title">should delete the group</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GroupService &gt; remove</div><div class="test-title">should throw error if deletion fails</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></details><details id="suite-8" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\grade-book\grade-book.controller.spec.ts</div><div class="suite-time warn">18.952s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController</div><div class="test-title">should be defined</div><div class="test-status">passed</div><div class="test-duration">0.033s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getUserSubjectsWithTaskGrades</div><div class="test-title">should return subjects with task grades</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; exportGroupedRatings</div><div class="test-title">should call service method with response object</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; exportGroupRating</div><div class="test-title">should call service with id and response</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getGroupRating</div><div class="test-title">should return group rating data</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getGroupRatingPDF</div><div class="test-title">should call PDF export method with id and res</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></details><details id="suite-9" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\grade-book\grade-book.services.spec.ts</div><div class="suite-time warn">19.259s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getUserSubjectsWithTaskGrades</div><div class="test-title">should call service and return data</div><div class="test-status">passed</div><div class="test-duration">0.025s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; exportGroupedRatings</div><div class="test-title">should call service with response object</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; exportGroupRating</div><div class="test-title">should call service with id and response</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getGroupRating</div><div class="test-title">should call service with group id and return data</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">GradeBookController &gt; getGroupRatingPDF</div><div class="test-title">should call service with group id and response</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div></div></details><details id="suite-10" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\danya\OneDrive\Рабочий стол\React\api\src\auth\auth.controller.spec.ts</div><div class="suite-time warn">20.29s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.login with userData and res</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.registerNewUser with userData and file info</div><div class="test-status">passed</div><div class="test-duration">0.004s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.resetPassword with email and newPassword</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.sendOtpCode with email</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.verifyOtp with otp and userId</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">AuthController</div><div class="test-title">should call authService.logout with userId</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div></div></details></main></body></html>

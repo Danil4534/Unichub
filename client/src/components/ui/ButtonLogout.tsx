@@ -4,12 +4,14 @@ interface ButtonProps {
   content: string;
   type: "submit" | "button" | "reset";
   className?: string;
+  id?: string;
   action?: () => void;
 }
 
 const ButtonLogout: React.FC<ButtonProps> = ({
   content,
   type,
+  id,
   className,
   action,
 }) => {
@@ -18,6 +20,7 @@ const ButtonLogout: React.FC<ButtonProps> = ({
       <div className="relative group">
         <button
           type={type}
+          id={id}
           onClick={action}
           className={cn(
             `relative inline-block p-px font-semibold leading-6 text-white bg-gray-800 cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out  active:scale-95`,

@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GradeBookController } from './grade-book.controller';
 import { GradeBookService } from './grade-book.service';
 import { Response } from 'express';
+import { GradeBookModule } from './grade-book.module';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 describe('GradeBookController', () => {
   let controller: GradeBookController;
@@ -14,6 +16,35 @@ describe('GradeBookController', () => {
     getGroupRatingData: jest.fn(),
     exportGroupRatingToPdf: jest.fn(),
   };
+
+  describe('GradeBookModule', () => {
+    let module: TestingModule;
+
+    beforeAll(async () => {
+      module = await Test.createTestingModule({
+        imports: [GradeBookModule],
+      }).compile();
+    });
+
+    it('should compile the module', () => {
+      expect(module).toBeDefined();
+    });
+
+    it('should provide GradeBookService', () => {
+      const service = module.get<GradeBookService>(GradeBookService);
+      expect(service).toBeInstanceOf(GradeBookService);
+    });
+
+    it('should provide GradeBookController', () => {
+      const controller = module.get<GradeBookController>(GradeBookController);
+      expect(controller).toBeInstanceOf(GradeBookController);
+    });
+
+    it('should provide PrismaService', () => {
+      const prisma = module.get<PrismaService>(PrismaService);
+      expect(prisma).toBeInstanceOf(PrismaService);
+    });
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

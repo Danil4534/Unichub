@@ -15,4 +15,6 @@ export class CreateLessonDto {
   created: Date;
   @ApiProperty()
   subjectId: string;
+  @ApiProperty()
+  status: string;
 }

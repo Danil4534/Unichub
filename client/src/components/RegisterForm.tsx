@@ -86,11 +86,21 @@ const RegisterForm: React.FC = () => {
           <div className="mb-2 flex gap-2 ">
             <LabelInputContainer className="mb-4">
               <Label htmlFor="name">First Name</Label>
-              <FormikInput name="name" placeholder="John" type="text" />
+              <FormikInput
+                name="name"
+                placeholder="John"
+                type="text"
+                id="firstName"
+              />
             </LabelInputContainer>
             <LabelInputContainer className="mb-2">
               <Label htmlFor="surname">Surname</Label>
-              <FormikInput name="surname" placeholder="Doe" type="text" />
+              <FormikInput
+                name="surname"
+                placeholder="Doe"
+                type="text"
+                id="surName"
+              />
             </LabelInputContainer>
           </div>
           <LabelInputContainer className="mb-2">
@@ -103,7 +113,12 @@ const RegisterForm: React.FC = () => {
           </LabelInputContainer>
           <LabelInputContainer className="mb-2">
             <Label htmlFor="phone">Phone</Label>
-            <FormikInput name="phone" placeholder="+380....." type="text" />
+            <FormikInput
+              name="phone"
+              placeholder="+380....."
+              type="text"
+              id="phone"
+            />
           </LabelInputContainer>
           <LabelInputContainer className="mb-2">
             <Label htmlFor="password">Password</Label>
@@ -128,7 +143,7 @@ const RegisterForm: React.FC = () => {
           </LabelInputContainer>
           <LabelInputContainer className="mb-2">
             <Label htmlFor="sex">Sex</Label>
-            <Field name="sex" as={Select}>
+            <Field name="sex" as={Select} id="sex">
               <option value={UserSex.MALE}>👦 Male</option>
               <option value={UserSex.FEMALE}>👩‍🦰 Female</option>
             </Field>
@@ -146,6 +161,7 @@ const RegisterForm: React.FC = () => {
             <Button
               content={"Sign up"}
               type="submit"
+              id="submit"
               className=" w-[382px] mt-4 font-k2d text-xl"
             />
             <p className="font-medium">
