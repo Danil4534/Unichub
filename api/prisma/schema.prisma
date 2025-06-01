@@ -103,21 +103,43 @@ model Lesson {
 }
 
 model Task {
-  id          String      @id @default(uuid())
-  title       String?
-  description String?
-  type        TypeTask
-  startTime   DateTime?
-  endTime     DateTime?
-  status      Int
-  grade       Int?
-  comments    Comment[]
-  Lesson      Lesson?     @relation(fields: [lessonId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  lessonId    String?
-  Subject     Subject?    @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  subjectId   String?
-  TaskGrade   TaskGrade[]
-  taskGroups  TaskGroup[]
+  id           String        @id @default(uuid())
+  title        String?
+  description  String?
+  type         TypeTask
+  startTime    DateTime?
+  endTime      DateTime?
+  teacherFiles TeacherFile[]
+  studentFiles StudentFile[]
+  status       Int
+  grade        Int?
+  comments     Comment[]
+  Lesson       Lesson?       @relation(fields: [lessonId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  lessonId     String?
+  Subject      Subject?      @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId    String?
+  TaskGrade    TaskGrade[]
+  taskGroups   TaskGroup[]
+}
+
+model StudentFile {
+  id     String @id @default(cuid())
+  url    String
+  name   String
+  type   String
+  size   Int
+  task   Task   @relation(fields: [taskId], references: [id])
+  taskId String
+}
+
+model TeacherFile {
+  id     String @id @default(uuid())
+  url    String
+  name   String
+  type   String
+  size   Int
+  task   Task   @relation(fields: [taskId], references: [id])
+  taskId String
 }
 
 model Notification {

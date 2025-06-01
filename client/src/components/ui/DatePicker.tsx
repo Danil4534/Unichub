@@ -34,7 +34,11 @@ export const DatePickerWithRange: React.FC<DatePickerProps> = ({
   });
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div
+      className={cn("grid gap-2", className)}
+      onDragStart={(e) => e.preventDefault()}
+      onPointerDown={(e) => e.stopPropagation()}
+    >
       <Popover>
         <PopoverTrigger asChild>
           <Button

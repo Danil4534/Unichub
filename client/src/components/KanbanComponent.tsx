@@ -7,7 +7,7 @@ import {
   KanbanHeader,
   KanbanProvider,
 } from "./ui/shadcn-io/kanban";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
 import { toast } from "sonner";
 import { Task } from "../shared/types/Task";
 import { Lesson } from "../shared/types/Lesson";
@@ -20,16 +20,23 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { RiUnpinLine } from "react-icons/ri";
 import { LiaTrashAltSolid } from "react-icons/lia";
 import { FaRegEdit } from "react-icons/fa";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import { TaskModal } from "./modalViews/TaskModal";
+import { Toaster } from "./ui/sonner";
 
-interface Feature {
+export interface Feature {
   id: string;
   type: "task" | "lesson" | "test";
   name: string;
-  startAt: Date;
-  endAt: Date;
+  description: string;
+  startAt: string;
+  endAt: string;
   status: { id: string; name: string; color: string };
   group: { id: string; name: string };
   product: { id: string; name: string };
@@ -110,8 +117,9 @@ const KanbanComponent = ({
           id: item.id,
           type: "task" as const,
           name: item.title,
-          startAt: new Date(item.startTime),
-          endAt: new Date(item.endTime),
+          description: item.description,
+          startAt: item.startTime,
+          endAt: item.endTime,
           status: exampleStatuses[item.status],
           group: { id: "1", name: "Default Group" },
           product: { id: "1", name: "Default Product" },
@@ -128,8 +136,9 @@ const KanbanComponent = ({
           id: item.id,
           type: "lesson" as const,
           name: item.title,
-          startAt: new Date(item.startTime),
-          endAt: new Date(item.endTime),
+          startAt: item.startTime,
+          description: item.description,
+          endAt: item.endTime,
           status: exampleStatuses[item.status],
           group: { id: "1", name: "Default Group" },
           product: { id: "1", name: "Default Product" },
@@ -168,61 +177,113 @@ const KanbanComponent = ({
     }
     return true;
   });
+  const isTeacher = store.currentUser.roles.includes("Teacher");
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      const featureToDelete = features.find((f) => f.id === taskId);
+      console.log("featureToDelete", featureToDelete);
+      if (!featureToDelete) return;
+
+      let url = "";
+
+      if (featureToDelete.type === "task") {
+        url = `http://localhost:3000/task/${taskId}`;
+        console.log("Delete task");
+      } else if (featureToDelete.type === "lesson") {
+        url = `http://localhost:3000/lesson/${taskId}`;
+        console.log("Delete lesson");
+      } else {
+        toast.error("Unsupported feature type");
+        return;
+      }
+
+      const response = await axios.delete(url);
+      if (response.status === 200) {
+        toast.success("Successfully deleted");
+        setFeatures((prev) => prev.filter((feature) => feature.id !== taskId));
+      }
+    } catch (e: any) {
+      console.error(e);
+      toast.error(e.message || "Ошибка при удалении");
+    }
+  };
+
   return (
-    <KanbanProvider onDragEnd={handleDragEnd} className="p-4">
-      {visibleStatuses.map((status) => (
-        <KanbanBoard key={status.name} id={status.name}>
-          <KanbanHeader name={status.name} color={status.color} />
-          <KanbanCards>
-            <div className="h-full">
-              {features
-                .filter((feature) => feature.status.name === status.name)
-                .map((feature, index) => (
-                  <KanbanCard
-                    key={feature.id}
-                    id={feature.id}
-                    name={feature.name}
-                    parent={status.name}
-                    index={index}
-                    className="relative"
-                  >
-                    <div className="absolute top-2 right-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <HiOutlineDotsHorizontal />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <FaRegEdit className="text-neutral-500" />{" "}
-                            <span>Edit</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <LiaTrashAltSolid />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex flex-col gap-1">
-                        <p className="m-0 flex-1 font-medium text-sm">
-                          {feature.name}
-                        </p>
-                        <p className="m-0 text-muted-foreground text-xs">
-                          start {formatDate(feature.startAt.toDateString())}
-                        </p>
-                        <p className="m-0 text-muted-foreground text-xs">
-                          end {formatDate(feature.endAt.toDateString())}
-                        </p>
+    <>
+      <KanbanProvider onDragEnd={handleDragEnd} className="p-4">
+        {visibleStatuses.map((status) => (
+          <KanbanBoard key={status.name} id={status.name}>
+            <KanbanHeader name={status.name} color={status.color} />
+            <KanbanCards className="z-10">
+              <div className="h-full">
+                {features
+                  .filter((feature) => feature.status.name === status.name)
+                  .map((feature: Feature, index) => (
+                    <KanbanCard
+                      key={feature.id}
+                      id={feature.id}
+                      name={feature.name}
+                      parent={status.name}
+                      index={index}
+                      canDrag={isTeacher}
+                      className="relative"
+                    >
+                      <div className="absolute top-2 right-2">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger>
+                            <HiOutlineDotsHorizontal />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <FaRegEdit className="text-neutral-500" />{" "}
+                              <span>Edit</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                handleDeleteTask(feature.id);
+                              }}
+                              onDragStart={(e) => e.preventDefault()}
+                              onPointerDown={(e) => e.stopPropagation()}
+                              className="cursor-pointer text-destructive"
+                            >
+                              <LiaTrashAltSolid className="text-destructive" />{" "}
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
-                    </div>
-                  </KanbanCard>
-                ))}
-            </div>
-          </KanbanCards>
-        </KanbanBoard>
-      ))}
-    </KanbanProvider>
+                      <div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <button
+                              className="hover:underline text-left"
+                              onClick={(e) => e.stopPropagation()}
+                              onDragStart={(e) => e.preventDefault()}
+                              onPointerDown={(e) => e.stopPropagation()}
+                            >
+                              {feature.name}
+                            </button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <TaskModal feature={feature} />
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                      <p className="m-0 text-muted-foreground text-xs">
+                        start {formatDate(feature.startAt)}
+                      </p>
+                      <p className="m-0 text-muted-foreground text-xs">
+                        end {formatDate(feature.endAt)}
+                      </p>
+                    </KanbanCard>
+                  ))}
+              </div>
+            </KanbanCards>
+          </KanbanBoard>
+        ))}
+      </KanbanProvider>
+      <Toaster />
+    </>
   );
 };
 

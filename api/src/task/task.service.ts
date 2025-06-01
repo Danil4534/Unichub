@@ -1,3 +1,5 @@
+import { StudentFile } from './../../node_modules/.prisma/client/index.d';
+import { StorageManagerService } from 'src/storage-manager/storage-manager.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -5,19 +7,91 @@ import { Prisma, Task } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class TaskService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private StorageManagerService: StorageManagerService,
+  ) {}
 
-  async createTask(createTaskDto: Prisma.TaskCreateInput) {
+  async createTask(
+    createTaskDto: Prisma.TaskCreateInput,
+    files: Express.Multer.File[],
+  ) {
     try {
+      const uploadedFiles = await Promise.all(
+        files.map((file) =>
+          this.StorageManagerService.uploadPublicFile(
+            file.buffer,
+            file.originalname,
+          ),
+        ),
+      );
+
       const newTask = await this.prisma.task.create({
         data: {
           ...createTaskDto,
           status: 0,
         },
+        include: {
+          teacherFiles: true,
+        },
       });
+
       return newTask;
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  async uploadFileForTask(
+    type: string,
+    taskId: string,
+    files: Express.Multer.File[],
+  ) {
+    try {
+      const uploadedFiles = await Promise.all(
+        files.map((file) =>
+          this.StorageManagerService.uploadPublicFile(
+            file.buffer,
+            file.originalname,
+          ),
+        ),
+      );
+      if (type === 'teacher') {
+        return await this.prisma.task.update({
+          where: { id: taskId },
+          data: {
+            teacherFiles: {
+              create: uploadedFiles.map((file, index) => ({
+                url: file.Location,
+                name: files[index].originalname,
+                type: files[index].mimetype, // MIME тип
+                size: files[index].size, // Размер в байтах
+              })),
+            },
+          },
+        });
+      } else if (type === 'student') {
+        return await this.prisma.task.update({
+          where: { id: taskId },
+          data: {
+            studentFiles: {
+              create: uploadedFiles.map((file, index) => ({
+                url: file.Location,
+                name: files[index].originalname,
+                type: files[index].mimetype,
+                size: files[index].size,
+              })),
+            },
+          },
+        });
+      } else {
+        throw new HttpException('Invalid type', HttpStatus.BAD_REQUEST);
+      }
+    } catch (e) {
+      console.error(e);
       throw new HttpException(
         'Internal Server Error',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -46,6 +120,10 @@ export class TaskService {
       take,
       where,
       orderBy,
+      include: {
+        teacherFiles: true,
+        studentFiles: true,
+      },
     });
   }
   parseTypes(where, orderBy, skip, take) {
@@ -70,7 +148,10 @@ export class TaskService {
   }
   async findOneTask(id: string): Promise<Task> {
     try {
-      const task = await this.prisma.task.findFirst({ where: { id } });
+      const task = await this.prisma.task.findFirst({
+        where: { id },
+        include: { teacherFiles: true, studentFiles: true },
+      });
       return task;
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
@@ -90,12 +171,8 @@ export class TaskService {
 
   async remove(id: string) {
     try {
-      const deleteTask = await this.prisma.task.findFirst({
-        where: { id },
-      });
-      if (deleteTask) {
-        await this.prisma.task.delete({ where: { id } });
-      }
+      const removeItem = await this.prisma.task.delete({ where: { id } });
+      return removeItem;
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }

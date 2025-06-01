@@ -196,7 +196,6 @@ const LoginForm: React.FC = () => {
                 type="submit"
                 id="submit"
                 className=" w-[382px] mt-4 font-k2d text-xl"
-                // action={() => toast("📩 Check your Email")}
               />
               <p className="font-medium">
                 Don`t have an account?

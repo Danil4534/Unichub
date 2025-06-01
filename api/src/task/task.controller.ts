@@ -10,12 +10,16 @@ import {
   HttpException,
   HttpStatus,
   Put,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Prisma, Task } from '@prisma/client';
 import { ApiBody } from '@nestjs/swagger';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('task')
 export class TaskController {
@@ -23,8 +27,23 @@ export class TaskController {
 
   @Post()
   @ApiBody({ type: CreateTaskDto })
-  async create(@Body() createTaskDto: Prisma.TaskCreateInput): Promise<Task> {
-    return await this.taskService.createTask(createTaskDto);
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() createTaskDto: Prisma.TaskCreateInput,
+    @UploadedFiles() files: Express.Multer.File[],
+  ): Promise<Task> {
+    return await this.taskService.createTask(createTaskDto, files);
+  }
+
+  @Put(':taskId/:type')
+  @ApiBody({ type: CreateTaskDto })
+  @UseInterceptors(FilesInterceptor('files'))
+  async UploadFiles(
+    @Param('taskId') taskId: string,
+    @Param('type') type: string,
+    @UploadedFiles() files: Express.Multer.File[],
+  ): Promise<Task> {
+    return await this.taskService.uploadFileForTask(type, taskId, files);
   }
 
   @Get()

@@ -20,8 +20,7 @@ import { Task } from "../shared/types/Task";
 import KanbanComponent from "../components/KanbanComponent";
 import { Lesson } from "../shared/types/Lesson";
 import { CreateTaskModal } from "../components/modalViews/CreateTaskModal";
-import { DatePickerWithRange } from "../components/ui/DatePicker";
-import { DateTimePickerForm } from "../components/ui/eventDatePicker";
+import { toast } from "sonner";
 
 const SubjectPage: React.FC = () => {
   const { id } = useParams();
@@ -48,6 +47,17 @@ const SubjectPage: React.FC = () => {
       console.log("Tests", testTasks);
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const handleDeleteAllLessons = async (subjectId: string | undefined) => {
+    const response = await axios.delete(
+      `http://localhost:3000/lessons/deleteAllLessonsIntoSubject/${subjectId}`
+    );
+    if (response.status === 200) {
+      toast.success("All lessons into this subject was successfully deleted");
+    } else {
+      toast.error("Error with deleting lessons");
     }
   };
 
@@ -82,13 +92,7 @@ const SubjectPage: React.FC = () => {
         <div>
           <h1>{subject?.description}</h1>
         </div>
-        {/* <div>
-          <DateTimePickerForm></DateTimePickerForm>
-        </div> */}
-        {/* <div className="flex ">
-          <RadialChart count={subject?.tasks.length} label="Tasks" />
-          <RadialChart count={subject?.lessons.length} label="Lessons" />
-        </div> */}
+
         <div>
           <Tabs defaultValue="Tasks">
             <TabsList>
@@ -117,14 +121,16 @@ const SubjectPage: React.FC = () => {
                   </div>
                   {store.currentUser?.roles.includes("Admin") ||
                   store.currentUser?.roles.includes("Teacher") ? (
-                    <AlertDialog>
-                      <AlertDialogTrigger className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
-                        Create Task
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <CreateTaskModal />
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <div className="flex gap-2">
+                      <AlertDialog>
+                        <AlertDialogTrigger className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
+                          Create Task
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <CreateTaskModal />
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   ) : (
                     <></>
                   )}
@@ -181,12 +187,20 @@ const SubjectPage: React.FC = () => {
                   </div>
                   {store.currentUser?.roles.includes("Admin") ||
                   store.currentUser?.roles.includes("Teacher") ? (
-                    <AlertDialog>
-                      <AlertDialogTrigger className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
-                        Create Lesson
-                      </AlertDialogTrigger>
-                      <AlertDialogContent></AlertDialogContent>
-                    </AlertDialog>
+                    <div className="flex gap-2">
+                      <AlertDialog>
+                        <AlertDialogTrigger className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400">
+                          Create Lesson
+                        </AlertDialogTrigger>
+                        <AlertDialogContent></AlertDialogContent>
+                      </AlertDialog>
+                      <button
+                        onClick={() => handleDeleteAllLessons(subject?.id)}
+                        className="w-[120px] flex justify-center items-center text-sm text-center p-1.5 font-k2d bg-white rounded-lg border-2 border-neutral-200 hover:shadow-md cursor-pointer dark:bg-neutral-800 dark:border-neutral-400"
+                      >
+                        Delete All Tasks
+                      </button>
+                    </div>
                   ) : (
                     <>
                       <h1>Lessons</h1>

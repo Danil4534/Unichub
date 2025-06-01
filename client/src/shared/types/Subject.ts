@@ -3,6 +3,7 @@ import { Lesson } from "./Lesson";
 import { Task } from "./Task";
 
 export type Subject = {
+  id: string | undefined;
   name: string;
   description: string;
   status: string;

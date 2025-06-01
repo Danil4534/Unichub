@@ -50,9 +50,10 @@ export const KanbanBoard = ({ id, children, className }: KanbanBoardProps) => {
   );
 };
 
-export type KanbanCardProps = Pick<Feature, "id" | "name"> & {
+type KanbanCardProps = Pick<Feature, "id" | "name"> & {
   index: number;
   parent: string;
+  canDrag?: boolean; // добавляем пропс
   children?: ReactNode;
   className?: string;
 };
@@ -62,30 +63,39 @@ export const KanbanCard = ({
   name,
   index,
   parent,
+  canDrag = true, // по умолчанию можно перетаскивать
   children,
   className,
 }: KanbanCardProps) => {
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id,
-      data: { index, parent },
-    });
+  const { attributes, listeners, setNodeRef, transform, isDragging } = canDrag
+    ? useDraggable({
+        id,
+        data: { index, parent },
+      })
+    : {
+        attributes: {},
+        listeners: {},
+        setNodeRef: (_element: HTMLElement | null) => {},
+        transform: null,
+        isDragging: false,
+      };
 
   return (
     <Card
       className={cn(
         "rounded-md p-3 shadow-sm",
         isDragging && "cursor-grabbing",
-        className
+        className,
+        !canDrag && "cursor-default select-none"
       )}
       style={{
         transform: transform
           ? `translateX(${transform.x}px) translateY(${transform.y}px)`
           : "none",
       }}
+      ref={setNodeRef}
       {...listeners}
       {...attributes}
-      ref={setNodeRef}
     >
       {children ?? <p className="m-0 font-medium text-sm">{name}</p>}
     </Card>
