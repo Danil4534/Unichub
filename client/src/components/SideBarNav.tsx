@@ -107,7 +107,7 @@ export const SideBarNav: React.FC = () => {
           <Header />
           <div className="w-full h-auto flex flex-row gap-2 animate-fadeIn">
             {pathname == "/homepage" ? (
-              <div className="w-full h-[calc(100vh-120px)] border border-neutral-200 dark:border-neutral-600 rounded-2xl justify-center items-center p-4 animate-fadeInOpacity">
+              <div className="w-full h-[calc(100vh-110px)] border border-neutral-200 dark:border-neutral-600 rounded-2xl justify-center items-center p-4 animate-fadeInOpacity">
                 <div className="flex justify-between">
                   <h1 className="font-k2d text-2xl mb-2">Schedule</h1>
                   <div className="flex justify-end items-center gap-2">
@@ -147,7 +147,7 @@ export const SideBarNav: React.FC = () => {
                 <Events />
               </div>
               <div className="w-[380px] h-full rounded-2xl border border-neutral-200 dark:border-neutral-600 p-4 animate-rightIn">
-                <h1>Banned Users Statistics</h1>
+                <h1>Users Statistics</h1>
                 <UserStatistics />
               </div>
             </div>

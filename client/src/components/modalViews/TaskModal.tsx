@@ -191,7 +191,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ feature }) => {
             </div>
           </div>
           <div className="mt-2">
-            <p className="dark:text-white font-bold"> My Files:</p>
+            <div className="flex w-full justify-between mb-2">
+              <p className="dark:text-white font-bold"> My Files:</p>
+              <span>
+                Grade{" "}
+                <span className="bg-emerald-600 px-2 py-1 text-white rounded-md">
+                  100 A
+                </span>{" "}
+              </span>
+            </div>
             <div className="flex flex-col gap-2">
               {studentFiles?.map((file, index) => {
                 const fileName = file.name;
